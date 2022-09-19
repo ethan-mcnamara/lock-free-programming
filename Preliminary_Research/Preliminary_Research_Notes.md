@@ -1,9 +1,4 @@
 # Preliminary Research on Lock-Free Programming
-Ethan McNamara
-
-2022-09-18
-
----
 
 ## Introduction
 At the suggestion of Dr. Chester, three video lectures on the topic of lock-free programming were analyzed with the results summarized below. The purpose of the analysis was to determine the purpose of lock-free programming, common design patterns used in lock-free programming, the common pitfalls that arise from this programming style, and why this style of programming can often result in an onerous burden being placed on the developers.
