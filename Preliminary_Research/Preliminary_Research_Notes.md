@@ -13,6 +13,9 @@ The three video lectures analyzed can be accessed through the following links. T
 3. Live Lock-Free or Deadlock (Practical Lock-free Programming) - Fedor Pikus (Video #3)
   * [Video lecture link (Part I)](https://www.youtube.com/watch?v=lVBvHbJsg5Y "Live Lock-Free or Deadlock (Practical Lock-free Programming) - Fedor Pikus Part I")
   * [Video lecture link (Part II)](https://www.youtube.com/watch?v=1obZeHnAwz4 "Live Lock-Free or Deadlock (Practical Lock-free Programming) - Fedor Pikus Part II")
+4. Nonblocking data structures - Michael Scott (Video #4)
+  * [Video lecture link (Part I)](https://youtu.be/9XAx279s7gs "Michael Scott — Nonblocking data structures. Part 1.")
+  * [Video lecture link (Part II)](https://youtu.be/cQIktrroRL0 "Michael Scott — Nonblocking data structures. Part 2.")
 
 ## Purpose of Lock-Free Programming
 Lock-free programming is designed to improve the performance of multi-threaded memory-bound applications. In this case, a memory-bound application is one for which the largest bottlenecks exist in accessing data in memory. While lock-free programming can be applied to single-threaded applications, the first step in this approach would be to convert the single-threaded program into a multi-threaded program and then apply lock-free techniques so it is simpler to apply the definition solely to multi-threaded applications.
