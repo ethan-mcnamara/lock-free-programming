@@ -4,7 +4,7 @@
 At the suggestion of Dr. Chester, three video lectures on the topic of lock-free programming were analyzed with the results summarized below. The purpose of the analysis was to determine the purpose of lock-free programming, common design patterns used in lock-free programming, the common pitfalls that arise from this programming style, and why this style of programming can often result in an onerous burden being placed on the developers. In the following week, an additional video (Video #4) was analyzed and the discussion of this video was merged into the previous discussion from the prior week.
 
 ## Video Lectures Analyzed
-The three video lectures analyzed can be accessed through the following links. Throughout the below analysis, reference to these lectures will be done in the form of *Video #1/#2/#3/#4* rather than the titles of the lectures for reasons of conciseness and clarity. 
+The four video lectures analyzed can be accessed through the following links. Throughout the below analysis, reference to these lectures will be done in the form of *Video #1/#2/#3/#4* rather than the titles of the lectures for reasons of conciseness and clarity. 
 1. Introduction to Lock-free Programming - Tony van Eerd (Video #1)
   * [Video lecture link](https://www.youtube.com/watch?v=RWCadBJ6wTk "Introduction to Lock-free Programming - Tony van Eerd") 
 2. Lock-Free Programming (or, Juggling Razor Blades) - Herb Sutter (Video #2)
