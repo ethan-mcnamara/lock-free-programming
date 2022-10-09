@@ -1,0 +1,25 @@
+//
+// Created by 17eth on 2022-10-08.
+//
+
+#ifndef CMAKE_LOCK_FREE_PROGRAMMING_CRITICALSITUATION_H
+#define CMAKE_LOCK_FREE_PROGRAMMING_CRITICALSITUATION_H
+
+#include "Event.h"
+#include "../Location/Location.h"
+#include "../Vehicle/Vehicle.h"
+#include <vector>
+
+namespace LockFreeDispatch {
+
+    class CriticalSituation : public Event {
+        private:
+            Location eventLocation;
+            std::vector<Vehicle*> vehicleRequirements;
+
+        public:
+    };
+
+} // LockFreeDispatch
+
+#endif //CMAKE_LOCK_FREE_PROGRAMMING_CRITICALSITUATION_H
