@@ -16,6 +16,13 @@ namespace LockFreeDispatch {
 
         public:
 
+        int64_t getXCoord() const;
+
+        void setXCoord(int64_t coord);
+
+        int64_t getYCoord() const;
+
+        void setYCoord(int64_t coord);
     };
 
 } // LockFreeDispatch

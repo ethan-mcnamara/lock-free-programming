@@ -19,6 +19,17 @@ namespace LockFreeDispatch {
         bool dispatched;
 
 
+        uint32_t getEventID() const;
+
+        void setEventID(uint32_t id);
+
+        Time getStartTime();
+
+        void setStartTime(Time time);
+
+        uint64_t getDurationSeconds() const;
+
+        void setDurationSeconds(uint64_t duration);
     };
 
 } // LockFreeDispatch

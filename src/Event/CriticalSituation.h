@@ -18,6 +18,20 @@ namespace LockFreeDispatch {
             std::vector<Vehicle*> vehicleRequirements;
 
         public:
+
+            Location getLocation();
+
+            void setLocation(Location newLocation);
+
+            std::vector<Vehicle*> getVehicleRequirements();
+
+            void addVehicleRequirement(Vehicle* newVehicleRequirement);
+
+            Vehicle *popVehicleRequirement();
+
+            void deleteVehicleRequirements();
+
+            bool findVehicleRequirement(Vehicle *vehicle);
     };
 
 } // LockFreeDispatch

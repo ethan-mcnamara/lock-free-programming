@@ -15,7 +15,7 @@ class VehicleStatus {
     public:
         uint8_t status;
 
-    std::string toString()
+    std::string toString() const
     {
         switch(status)
         {

@@ -15,6 +15,13 @@ namespace LockFreeDispatch {
             uint32_t fireStationID;
 
         public:
+        uint32_t getVehicleID() const;
+
+        void setVehicleID(uint32_t id);
+
+        uint32_t getFireStationID() const;
+
+        void setFireStationID(uint32_t id);
     };
 
 } // LockFreeDispatch

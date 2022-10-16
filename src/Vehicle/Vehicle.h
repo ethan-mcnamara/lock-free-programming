@@ -23,6 +23,33 @@ namespace LockFreeDispatch {
     public:
         VehicleStatus curVehicleStatus;
 
+        uint32_t getVehicleID() const;
+
+        void setVehicleID(uint32_t id);
+
+        Location getVehicleLocation();
+
+        void setVehicleLocation(Location newLocation);
+
+        FireStation getHomeFireStation();
+
+        void setHomeFireStation(FireStation station);
+
+        uint16_t getMaxNumCrew() const;
+
+        void setMaxNumCrew(uint16_t newMaxNumCrew);
+
+        uint16_t getCurNumCrew() const;
+
+        void setCurNumCrew(uint16_t newCurNumCrew);
+
+        float getCurWaterVolumeLitres() const;
+
+        void setCurWaterVolumeLitres(float volume);
+
+        float getMaxWaterVolumeLitres() const;
+
+        void setMaxWaterVolumeLitres(float volume);
     };
 
 } // LockFreeDispatch
