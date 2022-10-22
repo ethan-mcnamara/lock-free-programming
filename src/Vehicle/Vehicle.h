@@ -16,9 +16,8 @@ namespace LockFreeDispatch {
         uint16_t curNumCrew;
         float curWaterVolumeLitres;
         float maxWaterVolumeLitres;
-    public:
         VehicleStatus curVehicleStatus;
-
+    public:
         uint32_t getVehicleID() const;
 
         void setVehicleID(uint32_t id);
@@ -46,6 +45,10 @@ namespace LockFreeDispatch {
         float getMaxWaterVolumeLitres() const;
 
         void setMaxWaterVolumeLitres(float volume);
+
+        VehicleStatus getCurVehicleStatus();
+
+        void setCurVehicleStatus(VehicleStatus newStatus);
     };
 
 } // LockFreeDispatch

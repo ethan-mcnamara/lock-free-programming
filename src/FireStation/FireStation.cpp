@@ -49,4 +49,28 @@ namespace LockFreeDispatch {
     {
         maxNumVehicles = vehicleNum;
     }
+
+    // Get curNumCrew
+    uint16_t FireStation::getCurNumCrew() const
+    {
+        return curNumCrew;
+    }
+
+    // Set curNumCrew
+    void FireStation::setCurNumCrew(uint16_t newNumCrew)
+    {
+        curNumCrew = newNumCrew;
+    }
+
+    // Get curNumVehicles
+    uint8_t FireStation::getCurNumVehicles() const
+    {
+        return curNumVehicles;
+    }
+
+    // Set curNumvehicles
+    void FireStation::setCurNumVehicles(uint8_t newNumVehicles)
+    {
+        curNumVehicles = newNumVehicles;
+    }
 } // LockFreeDispatch

@@ -37,4 +37,16 @@ namespace LockFreeDispatch {
     {
         durationSeconds = duration;
     }
+
+    // Get dispatched
+    bool Event::getDispatched() const
+    {
+        return dispatched;
+    }
+
+    // Set dispatched
+    void Event::setDispatched(bool dispatchStatus)
+    {
+        dispatched = dispatchStatus;
+    }
 } // LockFreeDispatch

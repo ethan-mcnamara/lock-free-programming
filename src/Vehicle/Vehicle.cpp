@@ -85,4 +85,16 @@ namespace LockFreeDispatch {
     {
         maxWaterVolumeLitres = volume;
     }
+
+    // Get curVehicleStatus
+    VehicleStatus Vehicle::getCurVehicleStatus()
+    {
+        return curVehicleStatus;
+    }
+
+    // Set curVehicleStatus
+    void Vehicle::setCurVehicleStatus(VehicleStatus newStatus)
+    {
+        curVehicleStatus = newStatus;
+    }
 } // LockFreeDispatch
