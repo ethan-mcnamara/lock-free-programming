@@ -8,7 +8,7 @@ The dispatching of emergency services is a scheduling problem faced by local dis
 
 The primary difference between this problem and a typical scheduling problem is the fact that the events to whom emergency resources are being scheduled are not identical. Of course different fires take different amount of times to properly contain, but there also exists different varieties of emergency fire vehicles with different capabilities and each situation has different vehicle and crew requirements. Since fire stations are located in different locations around the district, the dispatching of crew to each situation must take into account the requirements of the situation, the proximity of vehicles to the situation, and the statuses of the vehicles, as they may be responding to other incidents or undergoing maintenance. 
 
-`// TODO - add more`
+For more information, see the [Literature Review](../../Course_Evaluation/Literature_Survey/EMcNamara_LiteratureSurvey.pdf) for more information on the benefits and comprimises of lock-free programming.
 
 ## Program Architecture
 The program will be developed in C++ using abstract and non-abstract classes. There will not exist a central scheduling entity but rather each event will be handled individually and will be dispatched resources based on the availability of resources in the shared data structure. For the purposes of this project, there will exist two varieties of fire emergency vehicles, `FireLadder` and `FireEngine`. In real-world fire dispatching, there exist several other types of fire trucks, but to represent the fact that real-world emergency situations each have different requirements without over-complicating the development only two types of fire trucks are to be considered.
@@ -33,10 +33,13 @@ The region attribute is used to more accurately simulate a district's dispatchin
 ### Shared Data Structures
 As new events arrive, they will be assigned to a new thread whose goal it is to have the appropriate resources dispatched as required. Therefore, each vehicle and each fire station will be a member of the greater shared data structure in the system. To dispatch resources to an event, whether that be a `CriticalSituation` or `Maintenance`, will require knowing the current location of each vehicle, its current status (i.e. whether it is responding to another incident, available and ready to respond, or out of service), and the number of crew members on board the vehicle. Since each thread attempting to schedule an event is fighting for the same shared resources, there must exist a method of synchronization to ensure no race conditions or potential deadlocks can occur.
 
+## Data Flow Diagram
+With shared data divided among several classes, properly defined data flow is important to ensure synchronization and to guarantee program logic is not affected. The below data flow diagram defines how data will be passed between processes to dispatch vehicles to an event. The bolded process is the one in which synchronization is required, while the others allow for some benign (not affecting program logic) race conditions.
+
+![Data Flow Diagram](Images/DFD_Diagram.jpg)
+
 ## Synchronization Difficulties
 While synchronizing multithreaded programs is always a challenge, doing so in a lock-free manner will be particularly challenging due to the size of shared data elements. Lock-free techniques, such as `CAS`, are very effective for data elements that can be stored in a single word in memory but become more difficult to implement when the shared data structure grows. The synchronization of this program's threads may require the use of a double-word `CAS` function, an instruction not available on all machines, and/or `linked_load` and `store_conditional` instructions. Despite the challenges, it should still be possible to construct an algorithm without the use of locks.
-
-Since each class stores information that is not strictly required when dispatching resources to an event, it will likely be required to store the data in such a way that the required attributes can be accessed in an atomic manner without the need to access the attributes not actively required. 
 
 ## Program Verification
 While writing a multithreaded program is relatively simple, writing a correct multithreaded program is much more difficult. To test whether the program developed is correct, there are two aspects which need to be considered: correctness and performance. The program must run properly and correctly to be considered successful as invalid logic or improper execution ordering can result in a program that does not meet the outlined requirements. Additionally, the purpose of developing a multithreaded program is to improve the program's performance compared to the single-threaded alternative. 
