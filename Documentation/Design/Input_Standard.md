@@ -17,7 +17,7 @@ This file does not necessarily need to be ordered in any manner, although organi
 The second `csv` file taken as input to the program contains a list of all fire stations in the dispatch district. Fire stations have a fixed location and therefore coordinates of the station are provided to the program at runtime. The following headers will be used for the file.
 
 ```csv
-fireStationID,xCoord,yCoord,maxNumCrew,curNumvehicle
+fireStationID,xCoord,yCoord,maxNumCrew
 ```
 
 Like the `Vehicle` `csv` file, this file does not necessarily need to be ordered in any way, but organizing by `fireStationID` would be ideal.
