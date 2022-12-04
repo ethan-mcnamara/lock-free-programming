@@ -8,10 +8,15 @@ namespace LockFreeDispatch {
 
     class DistrictResources {
         private:
-
-        public:
             std::vector<Vehicle> districtVehicles;
             std::vector<FireStation> districtFireStations;
+
+        public:
+            void populateDistrictVehicles(const std::vector<Vehicle>& vehicles);
+            void populateDistrictFireStations(const std::vector<FireStation>& stations);
+            FireStation findFireStation(uint32_t fireStationID);
+            void processVehicleSampleData(const std::string& fileName);
+            void processFireStationSampleData(const std::string& fileName);
 
     };
 
