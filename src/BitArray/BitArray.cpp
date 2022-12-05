@@ -22,7 +22,7 @@ namespace LockFreeDispatch {
         }
         else if (vehicleID < 128)
         {
-            uint64_t position = (double_t) std::pow(2.0, (double_t) vehicleID);
+            uint64_t position = (double_t) std::pow(2.0, (double_t) vehicleID - 64.0);
             if(writeTrue)
             {
                 // Write 1 to vehicle position in array
@@ -33,6 +33,23 @@ namespace LockFreeDispatch {
                 // Write 0 to vehicle position in array
                 globalBitArray[1] &= ~position;
             }
+        }
+        else
+        {
+            exit(-1);
+        }
+    }
+
+    bool BitArray::getVehicleAvailability(int vehicleID) {
+        if (vehicleID < 63)
+        {
+            uint64_t position = (double_t) std::pow(2.0, (double_t) vehicleID);
+            return globalBitArray[0] & position;
+        }
+        else if (vehicleID < 128)
+        {
+            uint64_t position = (double_t) std::pow(2.0, (double_t) vehicleID - 64.0);
+            return globalBitArray[1] & position;
         }
         else
         {

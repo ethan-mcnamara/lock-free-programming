@@ -7,10 +7,11 @@ namespace LockFreeDispatch {
 
     class BitArray {
         public:
-            static void modifyBitArray(int vehicleID, bool writeTrue);
+            void modifyBitArray(int vehicleID, bool writeTrue);
+            bool getVehicleAvailability(int vehicleID);
 
         private:
-            static uint64_t globalBitArray [2];
+            uint64_t globalBitArray [2];
 
 
     };
