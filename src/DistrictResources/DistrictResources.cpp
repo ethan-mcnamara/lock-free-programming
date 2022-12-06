@@ -110,4 +110,14 @@ namespace LockFreeDispatch {
         }
     }
 
+    void DistrictResources::processEventSampleData(const std::string &fileName)
+    {
+        // TODO - implement function
+    }
+
+    void DistrictResources::processVehicleRequirementsSampleData(const std::string &fileName)
+    {
+        // TODO - implement function
+    }
+
 } // LockFreeDispatch

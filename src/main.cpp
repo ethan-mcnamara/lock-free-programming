@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     std::thread processVehicleRequirementData_thread([a = districtResources,
                                                       vehicleRequirementsListFileName]()
     {
-        a->processVehicleSampleData(vehicleRequirementsListFileName);
+        a->processVehicleRequirementsSampleData(vehicleRequirementsListFileName);
     });
 
     // Read Event data (no requirements on other files)
