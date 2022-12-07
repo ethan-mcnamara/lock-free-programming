@@ -2,6 +2,7 @@
 #define LOCK_FREE_PROGRAMMING_DISTRICTRESOURCES_H
 
 #include <vector>
+#include <unordered_map>
 #include "../Vehicle/Vehicle.h"
 
 namespace LockFreeDispatch {
@@ -10,6 +11,7 @@ namespace LockFreeDispatch {
         private:
             std::vector<Vehicle> districtVehicles;
             std::vector<FireStation> districtFireStations;
+            std::unordered_map<uint16_t, Vehicle> vehicleRequirements;
 
         public:
             void populateDistrictVehicles(const std::vector<Vehicle>& vehicles);

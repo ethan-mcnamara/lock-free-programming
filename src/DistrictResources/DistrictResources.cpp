@@ -165,7 +165,40 @@ namespace LockFreeDispatch {
 
     void DistrictResources::processVehicleRequirementsSampleData(const std::string &fileName)
     {
-        // TODO - implement function
+        std::vector<std::vector<std::string>> reqts;
+        std::vector<std::string> row;
+        std::string line, word;
+
+        std::fstream file (fileName, std::ios::in);
+        while(getline(file, line))
+        {
+            row.clear();
+
+            std::stringstream str(line);
+
+            while(getline(str, word, ','))
+                row.push_back(word);
+            reqts.push_back(row);
+        }
+        for (std::vector<std::string> entry : reqts)
+        {
+            uint16_t vehicleReqtId = stoi(entry.at(0));
+
+            if (entry.at(1) == "FireEngine")
+            {
+                FireEngine newReqt = FireEngine();
+                newReqt.setCurWaterVolumeLitres(stof(entry.at(2)));
+                newReqt.setCurNumCrew(stoi(entry.at(3)));
+                vehicleRequirements[vehicleReqtId] = newReqt;
+            }
+            else if (entry.at(1) == "FireLadder")
+            {
+                FireLadder newReqt = FireLadder();
+                newReqt.setCurWaterVolumeLitres(stof(entry.at(2)));
+                newReqt.setCurNumCrew(stoi(entry.at(3)));
+                vehicleRequirements[vehicleReqtId] = newReqt;
+            }
+        }
     }
 
 } // LockFreeDispatch
