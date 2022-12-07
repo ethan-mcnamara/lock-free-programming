@@ -2,6 +2,7 @@
 #define LOCK_FREE_PROGRAMMING_TIME_H
 
 #include <cstdint>
+#include <string>
 
 namespace LockFreeDispatch {
 
@@ -14,7 +15,6 @@ namespace LockFreeDispatch {
         uint16_t day;
 
     public:
-
         uint8_t getMillisecond() const;
 
         void setMillisecond(uint8_t digit);
@@ -44,6 +44,8 @@ namespace LockFreeDispatch {
         bool isAfter(Time otherTime) const;
 
         void printTime() const;
+
+        static Time stringToTime(std::string time);
     };
 
 } // LockFreeDispatch

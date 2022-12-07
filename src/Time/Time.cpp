@@ -134,4 +134,8 @@ namespace LockFreeDispatch {
     {
         printf("%d:%02d:%02d:%02d:%02d", day, hour, minute, second, millisecond);
     }
+
+    Time Time::stringToTime(std::string time) {
+        // TODO - implement function
+    }
 } // LockFreeDispatch
