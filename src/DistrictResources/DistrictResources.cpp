@@ -3,6 +3,10 @@
 #include "DistrictResources.h"
 #include "../Vehicle/FireEngine.h"
 #include "../Vehicle/FireLadder.h"
+#include "../Vehicle/Vehicle.h"
+#include "../Event/Event.h"
+#include "../Event/CriticalSituation.h"
+#include "../Event/Maintenance.h"
 
 namespace LockFreeDispatch {
 
@@ -110,9 +114,53 @@ namespace LockFreeDispatch {
         }
     }
 
-    void DistrictResources::processEventSampleData(const std::string &fileName)
+    void DistrictResources::processEventSampleData(const std::string &fileName, std::vector<Event> *pendingQueue)
     {
-        // TODO - implement function
+        std::vector<std::vector<std::string>> events;
+        std::vector<std::string> row;
+        std::string line, word;
+
+        std::fstream file (fileName, std::ios::in);
+        while(getline(file, line))
+        {
+            row.clear();
+
+            std::stringstream str(line);
+
+            while(getline(str, word, ','))
+                row.push_back(word);
+            events.push_back(row);
+        }
+
+        for (std::vector<std::string> entry : events)
+        {
+            std::string eventType = entry.at(3);
+            if (eventType == "CriticalSituation")
+            {
+                CriticalSituation newEvent = *new CriticalSituation();
+                newEvent.setEventID(stoi(entry.at(0)));
+                newEvent.setStartTime(Time::stringToTime(entry.at(1)));
+                newEvent.setDurationSeconds(stoi(entry.at(2)));
+                Location newLocation{};
+                newLocation.setXCoord(stoi(entry.at(3)));
+                newLocation.setYCoord(stoi(entry.at(4)));
+                newEvent.setLocation(newLocation);
+                newEvent.addVehicleRequirementId(stoi(entry.at(5)));
+
+                pendingQueue->push_back(newEvent);
+            }
+            else if (eventType == "Maintenance")
+            {
+                Maintenance newEvent = *new Maintenance();
+                newEvent.setEventID(stoi(entry.at(0)));
+                newEvent.setStartTime(Time::stringToTime(entry.at(1)));
+                newEvent.setDurationSeconds(stoi(entry.at(2)));
+                newEvent.setVehicleID(stoi(entry.at(5)));
+                newEvent.setFireStationID((stoi(entry.at(6))));
+
+                pendingQueue->push_back(newEvent);
+            }
+        }
     }
 
     void DistrictResources::processVehicleRequirementsSampleData(const std::string &fileName)
