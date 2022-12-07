@@ -25,4 +25,6 @@ namespace LockFreeDispatch {
     {
         fireStationID = id;
     }
+
+    Maintenance::Maintenance() = default;
 } // LockFreeDispatch

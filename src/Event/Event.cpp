@@ -49,4 +49,6 @@ namespace LockFreeDispatch {
     {
         dispatched = dispatchStatus;
     }
+
+    Event::Event() = default;
 } // LockFreeDispatch

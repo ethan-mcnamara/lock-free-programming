@@ -4,6 +4,7 @@
 #include "../Location/Location.h"
 #include "../FireStation/FireStation.h"
 #include "../VehicleStatus/VehicleStatus.h"
+#include "../Event/CriticalSituation.h"
 
 namespace LockFreeDispatch {
 
@@ -18,6 +19,8 @@ namespace LockFreeDispatch {
         float maxWaterVolumeLitres;
         VehicleStatus curVehicleStatus;
     public:
+        Vehicle();
+
         uint32_t getVehicleID() const;
 
         void setVehicleID(uint32_t id);

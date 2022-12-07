@@ -97,4 +97,6 @@ namespace LockFreeDispatch {
     {
         curVehicleStatus = newStatus;
     }
+
+    Vehicle::Vehicle() = default;
 } // LockFreeDispatch

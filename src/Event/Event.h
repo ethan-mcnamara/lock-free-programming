@@ -13,6 +13,7 @@ namespace LockFreeDispatch {
         uint64_t durationSeconds;
         bool dispatched;
     public:
+        Event();
 
         uint32_t getEventID() const;
 
