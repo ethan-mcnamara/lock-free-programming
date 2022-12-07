@@ -37,9 +37,9 @@ int main(int argc, char *argv[]) {
     });
 
     // Read Event data (no requirements on other files)
-    std::thread processEventData_thread([a = districtResources, eventListFileName]()
+    std::thread processEventData_thread([a = districtResources, eventListFileName, b = eventFactory->pendingQueue]()
     {
-        a->processEventSampleData(eventListFileName);
+        a->processEventSampleData(eventListFileName, &(eventFactory->pendingQueue));
     });
 
     processFireStationData_thread.join();
