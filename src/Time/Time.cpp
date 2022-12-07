@@ -1,4 +1,5 @@
 #include <string>
+#include <regex>
 #include "Time.h"
 
 namespace LockFreeDispatch {
@@ -136,6 +137,26 @@ namespace LockFreeDispatch {
     }
 
     Time Time::stringToTime(std::string time) {
-        // TODO - implement function
+        Time newTime = Time();
+
+        // Regex expression for pattern to be searched
+        std::regex regexp("(\d)+:(\d)+:(\d)+:(\d)+:(\d)+");
+
+        // Flag type for determining the matching behavior (in this case on string objects)
+        std::smatch matches;
+
+        // Regex_search that searches pattern regexp in the string
+        regex_search(time, matches, regexp);
+
+        // Set Time properties
+        newTime.setDay(stoi(matches[0]));
+        newTime.setHour(stoi(matches[1]));
+        newTime.setMinute(stoi(matches[2]));
+        newTime.setSecond(stoi(matches[3]));
+        newTime.setMillisecond(stoi(matches[4]));
+
+        return newTime;
     }
+
+    Time::Time() = default;
 } // LockFreeDispatch

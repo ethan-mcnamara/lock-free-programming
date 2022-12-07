@@ -15,6 +15,8 @@ namespace LockFreeDispatch {
         uint16_t day;
 
     public:
+        Time();
+
         uint8_t getMillisecond() const;
 
         void setMillisecond(uint8_t digit);
