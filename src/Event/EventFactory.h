@@ -8,9 +8,14 @@ namespace LockFreeDispatch {
 
     class EventFactory {
         private:
+
             std::vector<Vehicle> vehiclesMeetingRequirements(std::vector<Vehicle> *vehicleReqts, std::vector<Vehicle> *orderedVehicles);
 
         public:
+            std::vector<Event> pendingQueue;
+
+            std::vector<Event> activeQueue;
+
             void selectVehicles(std::vector<Vehicle> *vehicleReqts, std::vector<Vehicle> *orderedVehicles);
             bool modifyVehicleStatus(std::vector<Vehicle> *vehicleList);
 
