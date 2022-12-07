@@ -23,9 +23,9 @@ namespace LockFreeDispatch {
     }
 
     // Add new vehicleRequirement
-    void CriticalSituation::addVehicleRequirement(Vehicle* newVehicleRequirement)
+    void CriticalSituation::addVehicleRequirementId(uint16_t newVehicleRequirementId)
     {
-        vehicleRequirements.push_back(newVehicleRequirement);
+        vehicleRequirementId = newVehicleRequirementId;
     }
 
     // Pop single vehicleRequirement from list
@@ -53,5 +53,6 @@ namespace LockFreeDispatch {
         return false;
     }
 
-    //
+    CriticalSituation::CriticalSituation() = default;
+
 } // LockFreeDispatch

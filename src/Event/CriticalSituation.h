@@ -3,7 +3,7 @@
 
 #include "Event.h"
 #include "../Location/Location.h"
-#include "../Vehicle/Vehicle.h"
+class Vehicle;
 #include <vector>
 
 namespace LockFreeDispatch {
@@ -12,8 +12,10 @@ namespace LockFreeDispatch {
         private:
             Location eventLocation;
             std::vector<Vehicle*> vehicleRequirements;
+            uint16_t vehicleRequirementId;
 
         public:
+            CriticalSituation();
 
             Location getLocation();
 
@@ -21,7 +23,7 @@ namespace LockFreeDispatch {
 
             std::vector<Vehicle*> getVehicleRequirements();
 
-            void addVehicleRequirement(Vehicle* newVehicleRequirement);
+            void addVehicleRequirementId(uint16_t newVehicleRequirementId);
 
             Vehicle *popVehicleRequirement();
 
