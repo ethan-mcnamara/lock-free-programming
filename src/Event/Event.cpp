@@ -51,4 +51,53 @@ namespace LockFreeDispatch {
     }
 
     Event::Event() = default;
+
+    // Get eventLocation
+    Location Event::getLocation()
+    {
+        return eventLocation;
+    }
+
+    // Set eventLocation
+    void Event::setLocation(Location newLocation)
+    {
+        eventLocation = newLocation;
+    }
+
+    // Get all vehicleRequirements
+    std::vector<Vehicle*> Event::getVehicleRequirements()
+    {
+        return vehicleRequirements;
+    }
+
+    // Add new vehicleRequirement
+    void Event::addVehicleRequirementId(uint16_t newVehicleRequirementId)
+    {
+        vehicleRequirementId = newVehicleRequirementId;
+    }
+
+    // Pop single vehicleRequirement from list
+    Vehicle *Event::popVehicleRequirement()
+    {
+        if (vehicleRequirements.empty()) return nullptr;
+        Vehicle* toReturn = vehicleRequirements.back();
+        vehicleRequirements.pop_back();
+        return toReturn;
+    }
+
+    // Delete all vehicleRequirements
+    void Event::deleteVehicleRequirements()
+    {
+        vehicleRequirements.clear();
+    }
+
+    // Find vehicleRequirement
+    bool Event::findVehicleRequirement(Vehicle *vehicle)
+    {
+        for (auto requirement : vehicleRequirements)
+        {
+            if (requirement == vehicle) return true;
+        }
+        return false;
+    }
 } // LockFreeDispatch
