@@ -22,6 +22,8 @@ namespace LockFreeDispatch {
                                 BitArray *bitArray);
             bool modifyVehicleStatus(std::vector<Vehicle> *vehicleList, BitArray *bitArray);
 
+            void populateActiveQueue(Time *programClock);
+
     };
 
 } // LockFreeDispatch

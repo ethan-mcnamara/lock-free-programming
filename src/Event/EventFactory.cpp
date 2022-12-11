@@ -124,5 +124,20 @@ namespace LockFreeDispatch {
         return workFactorSum / listSize;
     }
 
+    void EventFactory::populateActiveQueue(Time *programClock)
+    {
+        while (!pendingQueue.empty())
+        {
+            // Wait until the start time of the next event is after the program clock
+            while(pendingQueue.front().getStartTime().isBefore(*programClock));
+
+            // Add the next event to the back of the active queue
+            activeQueue.push_back(pendingQueue.front());
+
+            // Remove the event from the pending queue
+            pendingQueue.erase(pendingQueue.begin());
+        }
+    }
+
 
 } // LockFreeDispatch

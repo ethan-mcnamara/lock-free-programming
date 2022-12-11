@@ -72,5 +72,13 @@ int main(int argc, char *argv[]) {
 
     #pragma endregion programClockSetup
 
+    #pragma region populateActiveQueue
+
+    std::thread populateActiveQueue_thread([a = eventFactory]()
+    {
+        a->populateActiveQueue(programClock);
+    });
+
+    #pragma endregion populateActiveQueue
     return 0;
 }
