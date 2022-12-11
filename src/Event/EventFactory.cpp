@@ -1,5 +1,5 @@
 #include "EventFactory.h"
-#include <<type_traits>
+#include <type_traits>
 
 namespace LockFreeDispatch {
 

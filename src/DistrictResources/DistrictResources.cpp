@@ -102,8 +102,8 @@ namespace LockFreeDispatch {
             FireStation newStation{};
 
             auto newLocation = new Location();
-            newLocation->setXCoord(stoi(entry.at(1)));
-            newLocation->setYCoord(stoi(entry.at(2)));
+            newLocation->setXCoord(stof(entry.at(1)));
+            newLocation->setYCoord(stof(entry.at(2)));
 
             newStation.setFireStationID(stoi(entry.at(0)));
             newStation.setFireStationLocation(*newLocation);
@@ -142,8 +142,8 @@ namespace LockFreeDispatch {
                 newEvent.setStartTime(Time::stringToTime(entry.at(1)));
                 newEvent.setDurationSeconds(stoi(entry.at(2)));
                 Location newLocation{};
-                newLocation.setXCoord(stoi(entry.at(3)));
-                newLocation.setYCoord(stoi(entry.at(4)));
+                newLocation.setXCoord(stof(entry.at(3)));
+                newLocation.setYCoord(stof(entry.at(4)));
                 newEvent.setLocation(newLocation);
                 newEvent.addVehicleRequirementId(stoi(entry.at(5)));
 
