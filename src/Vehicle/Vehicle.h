@@ -18,6 +18,7 @@ namespace LockFreeDispatch {
         float curWaterVolumeLitres;
         float maxWaterVolumeLitres;
         VehicleStatus curVehicleStatus;
+        float workFactor;
     public:
         Vehicle();
 
@@ -52,6 +53,10 @@ namespace LockFreeDispatch {
         VehicleStatus getCurVehicleStatus();
 
         void setCurVehicleStatus(VehicleStatus newStatus);
+
+        float getWorkFactor();
+
+        void setWorkFactor(float newWorkFactor);
     };
 
 } // LockFreeDispatch

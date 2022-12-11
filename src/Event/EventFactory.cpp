@@ -3,6 +3,7 @@
 #include <type_traits>
 #include <atomic>
 #include <iostream>
+#include <cmath>
 
 namespace LockFreeDispatch {
 
@@ -26,8 +27,59 @@ namespace LockFreeDispatch {
         return meetingRequirements;
     }
 
-    void EventFactory::selectVehicles(std::vector<Vehicle> *vehicleReqts, std::vector<Vehicle> *orderedVehicles) {
-        // TODO - implement function
+    void EventFactory::selectVehicles(std::vector<Vehicle> *vehicleReqts, std::vector<Vehicle> *orderedVehicles,
+                                      BitArray *bitArray) {
+        while (true)
+        {
+            std::vector<Vehicle> selectedVehicles;
+            uint8_t numVehiclesRequired = vehicleReqts->size();
+            std::vector<Vehicle> listSubset = vehiclesMeetingRequirements(vehicleReqts, orderedVehicles);
+            float avgWorkFactor = calculateAverageWorkFactor(listSubset);
+
+            for (auto vehicle : listSubset)
+            {
+                if (vehicle.getWorkFactor() >= avgWorkFactor)
+                {
+                    if (vehicle.getCurVehicleStatus() == VehicleStatus::Available
+                    || vehicle.getCurVehicleStatus() == VehicleStatus::Returning)
+                    {
+                        selectedVehicles.push_back(vehicle);
+                        --numVehiclesRequired;
+                    }
+                }
+                if (numVehiclesRequired == 0)
+                {
+                    if (modifyVehicleStatus(&selectedVehicles, bitArray))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        // Break inner for loop and continue outer while loop
+                        // I know, I know, it's a goto - don't be scared
+                        // This is the easiest way to perform the loop iteration needed and won't harm anyone
+                        // despite what everyone says, these can be useful.
+                        goto tryAgain;
+                    }
+                }
+            }
+            for (auto vehicle : *orderedVehicles) {
+                if (vehicle.getCurVehicleStatus() == VehicleStatus::Available
+                    || vehicle.getCurVehicleStatus() == VehicleStatus::Returning) {
+                    selectedVehicles.push_back(vehicle);
+                    --numVehiclesRequired;
+                }
+                if (numVehiclesRequired == 0)
+                {
+                    if (modifyVehicleStatus(&selectedVehicles, bitArray))
+                    {
+                        return;
+                    }
+                }
+            }
+            // See, it's friendly :)
+            tryAgain:;
+        }
     }
 
     bool EventFactory::modifyVehicleStatus(std::vector<Vehicle> *vehicleList, BitArray *bitArray) {
@@ -60,6 +112,16 @@ namespace LockFreeDispatch {
             return true;
         }
         return false;
+    }
+
+    float EventFactory::calculateAverageWorkFactor(std::vector<Vehicle> vehicleList) {
+        float listSize = vehicleList.size();
+        float workFactorSum = 0;
+        for (auto vehicle : vehicleList)
+        {
+            workFactorSum += vehicle.getWorkFactor();
+        }
+        return workFactorSum / listSize;
     }
 
 

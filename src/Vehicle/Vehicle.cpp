@@ -98,5 +98,15 @@ namespace LockFreeDispatch {
         curVehicleStatus = newStatus;
     }
 
+    float Vehicle::getWorkFactor()
+    {
+        return workFactor;
+    }
+
+    void Vehicle::setWorkFactor(float newWorkFactor)
+    {
+        workFactor = newWorkFactor;
+    }
+
     Vehicle::Vehicle() = default;
 } // LockFreeDispatch
