@@ -15,11 +15,11 @@ namespace LockFreeDispatch {
 
         public:
 
-            std::atomic<float> *const getXCoord() const;
+            std::atomic<float> *getXCoord();
 
             void setXCoord(float coord);
 
-            std::atomic<float> *const getYCoord() const;
+            std::atomic<float> *getYCoord();
 
             void setYCoord(float coord);
 
