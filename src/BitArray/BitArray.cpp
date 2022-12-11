@@ -1,58 +1,39 @@
 #include <cmath>
+#include <atomic>
 #include "BitArray.h"
 
 namespace LockFreeDispatch {
 
-    void BitArray::modifyBitArray(int vehicleID, bool writeTrue)
+    uint64_t BitArray::modifyBitArray(int vehicleID, bool writeTrue)
     {
-        if (vehicleID < 63)
+        uint64_t position = (double_t) std::pow(2.0, (double_t) vehicleID);
+        uint64_t copyGlobalBitArray  = globalBitArray;
+        if(writeTrue)
         {
-            uint64_t position = (double_t) std::pow(2.0, (double_t) vehicleID);
-            if(writeTrue)
-            {
-                // Write 1 to vehicle position in array
-                globalBitArray[0] |= position;
-            }
-            else
-            {
-                // Write 0 to vehicle position in array
-                globalBitArray[0] &= ~position;
-            }
-        }
-        else if (vehicleID < 128)
-        {
-            uint64_t position = (double_t) std::pow(2.0, (double_t) vehicleID - 64.0);
-            if(writeTrue)
-            {
-                // Write 1 to vehicle position in array
-                globalBitArray[1] |= position;
-            }
-            else
-            {
-                // Write 0 to vehicle position in array
-                globalBitArray[1] &= ~position;
-            }
+            // Write 1 to vehicle position in array
+            copyGlobalBitArray |= position;
         }
         else
         {
-            exit(-1);
+            // Write 0 to vehicle position in array
+            copyGlobalBitArray &= ~position;
         }
+        return copyGlobalBitArray;
     }
 
-    bool BitArray::getVehicleAvailability(int vehicleID) {
-        if (vehicleID < 63)
-        {
-            uint64_t position = (double_t) std::pow(2.0, (double_t) vehicleID);
-            return globalBitArray[0] & position;
-        }
-        else if (vehicleID < 128)
-        {
-            uint64_t position = (double_t) std::pow(2.0, (double_t) vehicleID - 64.0);
-            return globalBitArray[1] & position;
-        }
-        else
-        {
-            exit(-1);
-        }
+    bool BitArray::getVehicleAvailability(int vehicleID)
+    {
+        uint64_t position = (double_t) std::pow(2.0, (double_t) vehicleID);
+        return globalBitArray & position;
     }
+
+    void BitArray::setGlobalBitArray(uint64_t newBitArray)
+    {
+        globalBitArray = newBitArray;
+    }
+
+    uint64_t BitArray::getGlobalBitArray() {
+        return globalBitArray;
+    }
+
 } // LockFreeDispatch

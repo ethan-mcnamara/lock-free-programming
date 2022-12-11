@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "../Vehicle/Vehicle.h"
+#include "../BitArray/BitArray.h"
 
 namespace LockFreeDispatch {
 
@@ -17,7 +18,7 @@ namespace LockFreeDispatch {
             std::vector<Event> activeQueue;
 
             void selectVehicles(std::vector<Vehicle> *vehicleReqts, std::vector<Vehicle> *orderedVehicles);
-            bool modifyVehicleStatus(std::vector<Vehicle> *vehicleList);
+            bool modifyVehicleStatus(std::vector<Vehicle> *vehicleList, BitArray *bitArray);
 
     };
 
