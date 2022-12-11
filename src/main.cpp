@@ -7,6 +7,7 @@ using namespace LockFreeDispatch;
 
 DistrictResources *districtResources = new DistrictResources();
 EventFactory *eventFactory = new EventFactory();
+Time *programClock = new Time();
 
 int main(int argc, char *argv[]) {
     std::cout << "Hello World!";
@@ -55,6 +56,21 @@ int main(int argc, char *argv[]) {
     processEventData_thread.join();
 
     #pragma endregion readData
+
+    #pragma region programClockSetup
+
+    *programClock = LockFreeDispatch::Time::stringToTime("00:00:00:00:00");
+    std::thread programClock_thread([a = programClock, b = eventFactory]()
+    {
+        // Run clock until all events have been dispatched
+        while (!b->pendingQueue.empty() && !b->activeQueue.empty())
+        {
+            a->incrementTimeOneMillisecond();
+            std::this_thread::sleep_for( std::chrono::milliseconds(1) );
+        }
+    });
+
+    #pragma endregion programClockSetup
 
     return 0;
 }

@@ -48,6 +48,8 @@ namespace LockFreeDispatch {
         void printTime() const;
 
         static Time stringToTime(std::string time);
+
+        void incrementTimeOneMillisecond();
     };
 
 } // LockFreeDispatch

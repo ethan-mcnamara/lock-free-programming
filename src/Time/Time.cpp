@@ -158,5 +158,30 @@ namespace LockFreeDispatch {
         return newTime;
     }
 
+    void Time::incrementTimeOneMillisecond()
+    {
+        ++millisecond;
+        if (millisecond > 59)
+        {
+            millisecond = 0;
+            ++second;
+        }
+        if (second > 59)
+        {
+            second = 0;
+            ++minute;
+        }
+        if (minute > 59)
+        {
+            minute = 0;
+            ++hour;
+        }
+        if (hour > 23)
+        {
+            hour = 0;
+            ++day;
+        }
+    }
+
     Time::Time() = default;
 } // LockFreeDispatch
