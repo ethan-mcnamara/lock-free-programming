@@ -12,14 +12,10 @@ add_executable(lock-free-programming
         BitArray/BitArray.cpp
         DistrictResources/DistrictResources.cpp
         DistrictResources/DistrictResources.h
-        Event/CriticalSituation.cpp
-        Event/CriticalSituation.h
         Event/EventFactory.cpp
         Event/EventFactory.h
         Event/Event.cpp
         Event/Event.h
-        Event/Maintenance.cpp
-        Event/Maintenance.h
         FireStation/FireStation.cpp
         FireStation/FireStation.h
         Location/Location.cpp

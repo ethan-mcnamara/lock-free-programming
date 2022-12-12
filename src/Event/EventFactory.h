@@ -4,6 +4,7 @@
 #include <vector>
 #include "../Vehicle/Vehicle.h"
 #include "../BitArray/BitArray.h"
+#include "../DistrictResources/DistrictResources.h"
 
 namespace LockFreeDispatch {
 
@@ -18,11 +19,18 @@ namespace LockFreeDispatch {
 
             std::vector<Event> activeQueue;
 
-            void selectVehicles(std::vector<Vehicle> *vehicleReqts, std::vector<Vehicle> *orderedVehicles,
-                                BitArray *bitArray);
+            std::vector<Vehicle> selectVehicles(std::vector<Vehicle> *vehicleReqts, std::vector<Vehicle> *orderedVehicles,
+                                                BitArray *bitArray);
+
             bool modifyVehicleStatus(std::vector<Vehicle> *vehicleList, BitArray *bitArray);
 
-            void populateActiveQueue(Time *programClock);
+            void populateActiveQueue(Time *programClock, DistrictResources *districtResources, BitArray *bitArray);
+
+            void processEvent(Event *curEvent, DistrictResources *districtResources, BitArray *bitArray);
+
+            void processVehicle(Vehicle *curVehicle, Event *curEvent);
+
+            void removeEventActiveQueue(uint32_t eventID);
 
     };
 

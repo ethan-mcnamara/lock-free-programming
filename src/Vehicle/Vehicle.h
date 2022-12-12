@@ -4,7 +4,6 @@
 #include "../Location/Location.h"
 #include "../FireStation/FireStation.h"
 #include "../VehicleStatus/VehicleStatus.h"
-#include "../Event/CriticalSituation.h"
 
 namespace LockFreeDispatch {
 

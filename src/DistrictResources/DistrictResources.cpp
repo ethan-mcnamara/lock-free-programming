@@ -5,8 +5,6 @@
 #include "../Vehicle/FireLadder.h"
 #include "../Vehicle/Vehicle.h"
 #include "../Event/Event.h"
-#include "../Event/CriticalSituation.h"
-#include "../Event/Maintenance.h"
 
 namespace LockFreeDispatch {
 
@@ -137,7 +135,7 @@ namespace LockFreeDispatch {
             std::string eventType = entry.at(3);
             if (eventType == "CriticalSituation")
             {
-                CriticalSituation newEvent = *new CriticalSituation();
+                Event newEvent = *new Event();
                 newEvent.setEventID(stoi(entry.at(0)));
                 newEvent.setStartTime(Time::stringToTime(entry.at(1)));
                 newEvent.setDurationSeconds(stoi(entry.at(2)));
@@ -146,17 +144,6 @@ namespace LockFreeDispatch {
                 newLocation.setYCoord(stof(entry.at(4)));
                 newEvent.setLocation(newLocation);
                 newEvent.addVehicleRequirementId(stoi(entry.at(5)));
-
-                pendingQueue->push_back(newEvent);
-            }
-            else if (eventType == "Maintenance")
-            {
-                Maintenance newEvent = *new Maintenance();
-                newEvent.setEventID(stoi(entry.at(0)));
-                newEvent.setStartTime(Time::stringToTime(entry.at(1)));
-                newEvent.setDurationSeconds(stoi(entry.at(2)));
-                newEvent.setVehicleID(stoi(entry.at(5)));
-                newEvent.setFireStationID((stoi(entry.at(6))));
 
                 pendingQueue->push_back(newEvent);
             }
@@ -189,16 +176,53 @@ namespace LockFreeDispatch {
                 FireEngine newReqt = FireEngine();
                 newReqt.setCurWaterVolumeLitres(stof(entry.at(2)));
                 newReqt.setCurNumCrew(stoi(entry.at(3)));
-                vehicleRequirements[vehicleReqtId] = newReqt;
+                if (vehicleRequirements.find(vehicleReqtId) == vehicleRequirements.end())
+                {
+                    vehicleRequirements[vehicleReqtId] = *new std::vector<Vehicle>;
+                }
+                vehicleRequirements[vehicleReqtId].push_back(newReqt);
             }
             else if (entry.at(1) == "FireLadder")
             {
                 FireLadder newReqt = FireLadder();
                 newReqt.setCurWaterVolumeLitres(stof(entry.at(2)));
                 newReqt.setCurNumCrew(stoi(entry.at(3)));
-                vehicleRequirements[vehicleReqtId] = newReqt;
+                if (vehicleRequirements.find(vehicleReqtId) == vehicleRequirements.end())
+                {
+                    vehicleRequirements[vehicleReqtId] = *new std::vector<Vehicle>;
+                }
+                vehicleRequirements[vehicleReqtId].push_back(newReqt);
             }
         }
+    }
+
+    std::vector<Vehicle> *DistrictResources::getVehicleRequirements(uint32_t eventID) {
+        return &vehicleRequirements[eventID];
+    }
+
+    std::vector<Vehicle> DistrictResources::getOrderedVehicleList(Location eventLocation) {
+        std::vector<Vehicle> orderedList = districtVehicles;
+
+        // Classic bubble sort, chosen for ease of implementation since there are always <64 vehicles
+        // it will always run in O(1) time
+        bool stillSorting = true;
+        while (stillSorting)
+        {
+            stillSorting = false;
+            for (size_t i = 0; i < orderedList.size()-1; i++)
+            {
+                if (Location::calculateDistance(orderedList[i].getVehicleLocation(), eventLocation) >
+                Location::calculateDistance(orderedList[i + 1].getVehicleLocation(), eventLocation) ){
+
+                    Vehicle temp = orderedList[i];
+                    orderedList[i] = orderedList[i + 1];
+                    orderedList[i + 1] = temp;
+                    stillSorting = true;
+                }
+            }
+        }
+        return orderedList;
+
     }
 
 } // LockFreeDispatch

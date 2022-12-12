@@ -98,4 +98,14 @@ namespace LockFreeDispatch {
         }
         inTransit = false;
     }
+
+    bool Location::getInTransit()
+    {
+        return inTransit;
+    }
+
+    void Location::setInTransitFalse()
+    {
+        inTransit = false;
+    }
 } // LockFreeDispatch

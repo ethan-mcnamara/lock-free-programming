@@ -8,8 +8,7 @@
 enum class VehicleStatus {
     Available,
     Responding,
-    Returning,
-    Maintenance
+    Returning
 };
 
 

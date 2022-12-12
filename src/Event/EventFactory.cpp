@@ -1,9 +1,12 @@
 #include "EventFactory.h"
 #include "../VehicleStatus/VehicleStatus.h"
+#include "../Time/Time.h"
+#include "Event.h"
 #include <type_traits>
 #include <atomic>
 #include <iostream>
 #include <cmath>
+#include <thread>
 
 namespace LockFreeDispatch {
 
@@ -27,8 +30,8 @@ namespace LockFreeDispatch {
         return meetingRequirements;
     }
 
-    void EventFactory::selectVehicles(std::vector<Vehicle> *vehicleReqts, std::vector<Vehicle> *orderedVehicles,
-                                      BitArray *bitArray) {
+    std::vector<Vehicle> EventFactory::selectVehicles(std::vector<Vehicle> *vehicleReqts, std::vector<Vehicle> *orderedVehicles,
+                                                      BitArray *bitArray) {
         while (true)
         {
             std::vector<Vehicle> selectedVehicles;
@@ -51,7 +54,7 @@ namespace LockFreeDispatch {
                 {
                     if (modifyVehicleStatus(&selectedVehicles, bitArray))
                     {
-                        return;
+                        return selectedVehicles;
                     }
                     else
                     {
@@ -73,7 +76,7 @@ namespace LockFreeDispatch {
                 {
                     if (modifyVehicleStatus(&selectedVehicles, bitArray))
                     {
-                        return;
+                        return selectedVehicles;
                     }
                 }
             }
@@ -124,18 +127,81 @@ namespace LockFreeDispatch {
         return workFactorSum / listSize;
     }
 
-    void EventFactory::populateActiveQueue(Time *programClock)
+    void EventFactory::populateActiveQueue(Time *programClock, DistrictResources *districtResources, BitArray *bitArray)
     {
         while (!pendingQueue.empty())
         {
             // Wait until the start time of the next event is after the program clock
             while(pendingQueue.front().getStartTime().isBefore(*programClock));
 
+            // Get a reference to the current event
+            auto curEvent = &pendingQueue.front();
+
             // Add the next event to the back of the active queue
-            activeQueue.push_back(pendingQueue.front());
+            activeQueue.push_back(*curEvent);
 
             // Remove the event from the pending queue
             pendingQueue.erase(pendingQueue.begin());
+
+            // Create a thread to handle this event
+            std::thread curEvent_thread([this, districtResources, curEvent, bitArray]()
+            {
+                processEvent(curEvent, districtResources, bitArray);
+            });
+        }
+    }
+
+    void EventFactory::processEvent(Event *curEvent, DistrictResources *districtResources, BitArray *bitArray)
+    {
+        std::vector<Vehicle> *eventRequirements = districtResources->getVehicleRequirements(curEvent->getEventID());
+
+        std::vector<Vehicle> orderedList = districtResources->getOrderedVehicleList(curEvent->getLocation());
+
+        std::vector<Vehicle> dispatchedVehicles = selectVehicles(eventRequirements, &orderedList, bitArray);
+
+        for (auto vehicle : dispatchedVehicles)
+        {
+            // Create a thread to handle this vehicle for this event
+            std::thread curEvent_thread([this, &vehicle, curEvent]()
+            {
+                processVehicle(&vehicle, curEvent);
+            });
+        }
+
+        removeEventActiveQueue(curEvent->getEventID());
+        std::cout << "Dispatched event #" << curEvent->getEventID() << std::endl;
+    }
+
+    void EventFactory::processVehicle(Vehicle *curVehicle, Event *curEvent)
+    {
+        // Start travel towards event location
+        curVehicle->getVehicleLocation().setInTransitFalse();
+        curVehicle->getVehicleLocation().moveLocationWrapper(curEvent->getLocation());
+
+        // Wait until vehicle arrives at event location
+        while(Location::calculateDistance(curVehicle->getVehicleLocation(), curEvent->getLocation()) != 0);
+
+        // Sleep for duration of event
+        std::this_thread::sleep_for(std::chrono::milliseconds(curEvent->getDurationSeconds()) );
+
+        // Start moving vehicle back to home station
+        curVehicle->getVehicleLocation().moveLocationWrapper(curVehicle->getHomeFireStation().getFireStationLocation());
+
+        // Allow for slight delay to ensure inTransit is set to True
+        std::this_thread::sleep_for(std::chrono::milliseconds(1) );
+
+        // Wait until vehicle arrives back at home station or is dispatched elsewhere
+        while(Location::calculateDistance(curVehicle->getVehicleLocation(), curVehicle->getHomeFireStation().getFireStationLocation()) != 0
+        || curVehicle->getVehicleLocation().getInTransit());
+
+    }
+
+    void EventFactory::removeEventActiveQueue(uint32_t eventID)
+    {
+        for (size_t i = 0; i < activeQueue.size(); ++i)
+        {
+            if (activeQueue[i].getEventID() == eventID)
+                activeQueue.erase(activeQueue.begin() + i);
         }
     }
 

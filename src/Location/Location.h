@@ -23,9 +23,13 @@ namespace LockFreeDispatch {
 
             void setYCoord(float coord);
 
-            double calculateDistance(Location locationA, Location locationB);
+            static double calculateDistance(Location locationA, Location locationB);
 
             void moveLocationWrapper(Location destination);
+
+            bool getInTransit();
+
+            void setInTransitFalse();
     };
 
 } // LockFreeDispatch

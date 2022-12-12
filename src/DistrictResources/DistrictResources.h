@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include "../Vehicle/Vehicle.h"
+#include "../Event/Event.h"
 
 namespace LockFreeDispatch {
 
@@ -11,7 +12,7 @@ namespace LockFreeDispatch {
         private:
             std::vector<Vehicle> districtVehicles;
             std::vector<FireStation> districtFireStations;
-            std::unordered_map<uint16_t, Vehicle> vehicleRequirements;
+            std::unordered_map<uint32_t, std::vector<Vehicle>> vehicleRequirements;
 
         public:
             void populateDistrictVehicles(const std::vector<Vehicle>& vehicles);
@@ -21,6 +22,8 @@ namespace LockFreeDispatch {
             void processFireStationSampleData(const std::string& fileName);
             void processEventSampleData(const std::string &fileName, std::vector<Event> *pendingQueue);
             void processVehicleRequirementsSampleData(const std::string &fileName);
+            std::vector<Vehicle> *getVehicleRequirements(uint32_t eventID);
+            std::vector<Vehicle> getOrderedVehicleList(Location eventLocation);
     };
 
 } // LockFreeDispatch

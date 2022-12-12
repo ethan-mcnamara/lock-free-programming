@@ -8,6 +8,7 @@ using namespace LockFreeDispatch;
 DistrictResources *districtResources = new DistrictResources();
 EventFactory *eventFactory = new EventFactory();
 Time *programClock = new Time();
+BitArray *globalBitArray = new BitArray();
 
 int main(int argc, char *argv[]) {
     std::cout << "Hello World!";
@@ -74,11 +75,15 @@ int main(int argc, char *argv[]) {
 
     #pragma region populateActiveQueue
 
-    std::thread populateActiveQueue_thread([a = eventFactory]()
+    std::thread populateActiveQueue_thread([a = eventFactory, b = districtResources, c = globalBitArray]()
     {
-        a->populateActiveQueue(programClock);
+        a->populateActiveQueue(programClock, b, c);
     });
 
     #pragma endregion populateActiveQueue
+
+
+
+
     return 0;
 }
