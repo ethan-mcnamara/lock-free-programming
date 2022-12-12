@@ -8,7 +8,7 @@ namespace LockFreeDispatch {
     class FireStation {
         private:
             uint32_t fireStationID;
-            Location fireStationLocation;
+            Location *fireStationLocation;
             uint16_t maxNumCrew;
             uint8_t maxNumVehicles;
             uint16_t curNumCrew;
@@ -19,9 +19,9 @@ namespace LockFreeDispatch {
 
             void setFireStationID(uint32_t id);
 
-            Location getFireStationLocation();
+            Location * getFireStationLocation();
 
-            void setFireStationLocation(Location location);
+            void setFireStationLocation(Location *location);
 
             uint16_t getMaxNumCrew() const;
 

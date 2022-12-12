@@ -1,6 +1,7 @@
 #include <string>
 #include <regex>
 #include "Time.h"
+#include <iostream>
 
 namespace LockFreeDispatch {
 
@@ -140,7 +141,7 @@ namespace LockFreeDispatch {
         Time newTime = Time();
 
         // Regex expression for pattern to be searched
-        std::regex regexp("(\d)+:(\d)+:(\d)+:(\d)+:(\d)+");
+        std::regex regexp(R"((\d)+:(\d)+:(\d)+:(\d)+:(\d)+)");
 
         // Flag type for determining the matching behavior (in this case on string objects)
         std::smatch matches;

@@ -8,22 +8,22 @@ namespace LockFreeDispatch {
 
     class Location {
         private:
-            std::atomic<float> *xCoord;
-            std::atomic<float> *yCoord;
+            float xCoord;
+            float yCoord;
             bool inTransit;
             void moveLocation(Location destination);
 
         public:
 
-            std::atomic<float> *getXCoord();
+            float getXCoord();
 
             void setXCoord(float coord);
 
-            std::atomic<float> *getYCoord();
+            float getYCoord();
 
             void setYCoord(float coord);
 
-            static double calculateDistance(Location locationA, Location locationB);
+            static double calculateDistance(Location *locationA, Location *locationB);
 
             void moveLocationWrapper(Location destination);
 

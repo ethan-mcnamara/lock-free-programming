@@ -10,7 +10,7 @@ namespace LockFreeDispatch {
     class Vehicle {
     private:
         uint32_t vehicleID;
-        Location vehicleLocation;
+        Location *vehicleLocation;
         FireStation homeFireStation;
         uint16_t maxNumCrew;
         uint16_t curNumCrew;
@@ -25,9 +25,9 @@ namespace LockFreeDispatch {
 
         void setVehicleID(uint32_t id);
 
-        Location getVehicleLocation();
+        Location *getVehicleLocation();
 
-        void setVehicleLocation(Location newLocation);
+        void setVehicleLocation(Location *newLocation);
 
         FireStation getHomeFireStation();
 

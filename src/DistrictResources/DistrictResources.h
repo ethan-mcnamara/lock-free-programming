@@ -23,7 +23,7 @@ namespace LockFreeDispatch {
             void processEventSampleData(const std::string &fileName, std::vector<Event> *pendingQueue);
             void processVehicleRequirementsSampleData(const std::string &fileName);
             std::vector<Vehicle> *getVehicleRequirements(uint32_t eventID);
-            std::vector<Vehicle> getOrderedVehicleList(Location eventLocation);
+            std::vector<Vehicle> *getOrderedVehicleList(Location *eventLocation);
     };
 
 } // LockFreeDispatch

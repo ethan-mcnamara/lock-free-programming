@@ -11,7 +11,6 @@ Time *programClock = new Time();
 BitArray *globalBitArray = new BitArray();
 
 int main(int argc, char *argv[]) {
-    std::cout << "Hello World!";
 
     #pragma region commandLineArguments
     // Process command-line arguments
@@ -70,15 +69,18 @@ int main(int argc, char *argv[]) {
             std::this_thread::sleep_for( std::chrono::milliseconds(1) );
         }
     });
+    programClock_thread.detach();
 
     #pragma endregion programClockSetup
 
     #pragma region populateActiveQueue
 
+    std::cout << "pendingQueue size: " << eventFactory->pendingQueue.size() << std::endl;
     std::thread populateActiveQueue_thread([a = eventFactory, b = districtResources, c = globalBitArray]()
     {
         a->populateActiveQueue(programClock, b, c);
     });
+    populateActiveQueue_thread.join();
 
     #pragma endregion populateActiveQueue
 

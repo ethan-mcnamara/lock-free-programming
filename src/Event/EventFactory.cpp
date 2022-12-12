@@ -143,29 +143,33 @@ namespace LockFreeDispatch {
             // Remove the event from the pending queue
             pendingQueue.erase(pendingQueue.begin());
 
+            std::cout << "Starting dispatch process for Event #" << curEvent->getEventID() << std::endl;
+
             // Create a thread to handle this event
             std::thread curEvent_thread([this, districtResources, curEvent, bitArray]()
             {
                 processEvent(curEvent, districtResources, bitArray);
             });
+            curEvent_thread.detach();
         }
     }
 
     void EventFactory::processEvent(Event *curEvent, DistrictResources *districtResources, BitArray *bitArray)
     {
         std::vector<Vehicle> *eventRequirements = districtResources->getVehicleRequirements(curEvent->getEventID());
-
-        std::vector<Vehicle> orderedList = districtResources->getOrderedVehicleList(curEvent->getLocation());
-
-        std::vector<Vehicle> dispatchedVehicles = selectVehicles(eventRequirements, &orderedList, bitArray);
+        std::cout << "Before ordered list" << std::endl;
+        std::vector<Vehicle> *orderedList = districtResources->getOrderedVehicleList(curEvent->getLocation());
+        std::cout << "After ordered list" << std::endl;
+        std::vector<Vehicle> dispatchedVehicles = selectVehicles(eventRequirements, orderedList, bitArray);
 
         for (auto vehicle : dispatchedVehicles)
         {
             // Create a thread to handle this vehicle for this event
-            std::thread curEvent_thread([this, &vehicle, curEvent]()
+            std::thread curVehicle_thread([this, &vehicle, curEvent]()
             {
                 processVehicle(&vehicle, curEvent);
             });
+            curVehicle_thread.detach();
         }
 
         removeEventActiveQueue(curEvent->getEventID());
@@ -175,8 +179,8 @@ namespace LockFreeDispatch {
     void EventFactory::processVehicle(Vehicle *curVehicle, Event *curEvent)
     {
         // Start travel towards event location
-        curVehicle->getVehicleLocation().setInTransitFalse();
-        curVehicle->getVehicleLocation().moveLocationWrapper(curEvent->getLocation());
+        curVehicle->getVehicleLocation()->setInTransitFalse();
+        curVehicle->getVehicleLocation()->moveLocationWrapper(*curEvent->getLocation());
 
         // Wait until vehicle arrives at event location
         while(Location::calculateDistance(curVehicle->getVehicleLocation(), curEvent->getLocation()) != 0);
@@ -185,14 +189,14 @@ namespace LockFreeDispatch {
         std::this_thread::sleep_for(std::chrono::milliseconds(curEvent->getDurationSeconds()) );
 
         // Start moving vehicle back to home station
-        curVehicle->getVehicleLocation().moveLocationWrapper(curVehicle->getHomeFireStation().getFireStationLocation());
+        curVehicle->getVehicleLocation()->moveLocationWrapper(*curVehicle->getHomeFireStation().getFireStationLocation());
 
         // Allow for slight delay to ensure inTransit is set to True
         std::this_thread::sleep_for(std::chrono::milliseconds(1) );
 
         // Wait until vehicle arrives back at home station or is dispatched elsewhere
         while(Location::calculateDistance(curVehicle->getVehicleLocation(), curVehicle->getHomeFireStation().getFireStationLocation()) != 0
-        || curVehicle->getVehicleLocation().getInTransit());
+        || curVehicle->getVehicleLocation()->getInTransit());
 
     }
 

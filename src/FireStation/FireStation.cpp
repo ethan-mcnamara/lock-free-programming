@@ -15,13 +15,13 @@ namespace LockFreeDispatch {
     }
 
     // Get fireStationLocation
-    Location FireStation::getFireStationLocation()
+    Location * FireStation::getFireStationLocation()
     {
         return fireStationLocation;
     }
 
     // Set fireStationLocation
-    void FireStation::setFireStationLocation(Location location)
+    void FireStation::setFireStationLocation(Location *location)
     {
         fireStationLocation = location;
     }

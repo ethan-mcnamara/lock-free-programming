@@ -15,13 +15,13 @@ namespace LockFreeDispatch {
     }
 
     // Get vehicleLocation
-    Location Vehicle::getVehicleLocation()
+    Location * Vehicle::getVehicleLocation()
     {
         return vehicleLocation;
     }
 
     // Set vehicleLocation
-    void Vehicle::setVehicleLocation(Location newLocation)
+    void Vehicle::setVehicleLocation(Location *newLocation)
     {
         vehicleLocation = newLocation;
     }

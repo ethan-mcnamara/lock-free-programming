@@ -16,7 +16,7 @@ namespace LockFreeDispatch {
         Time startTime;
         uint64_t durationSeconds;
         bool dispatched;
-        Location eventLocation;
+        Location *eventLocation;
         std::vector<Vehicle*> vehicleRequirements;
         uint16_t vehicleRequirementId;
     public:
@@ -38,9 +38,9 @@ namespace LockFreeDispatch {
 
         void setDispatched(bool dispatchStatus);
 
-        Location getLocation();
+        Location *getLocation();
 
-        void setLocation(Location newLocation);
+        void setLocation(Location *newLocation);
 
         std::vector<Vehicle*> getVehicleRequirements();
 

@@ -3,11 +3,12 @@
 #include <chrono>
 #include <thread>
 #include <atomic>
+#include <iostream>
 
 namespace LockFreeDispatch {
 
     // Get xCoord
-    std::atomic<float> *Location::getXCoord()
+    float Location::getXCoord()
     {
         return xCoord;
     }
@@ -15,11 +16,11 @@ namespace LockFreeDispatch {
     // Set xCoord
     void Location::setXCoord(float coord)
     {
-        xCoord = reinterpret_cast<std::atomic<float> *>(&coord);
+        xCoord = coord;
     }
 
     // Get yCoord
-    std::atomic<float> *Location::getYCoord()
+    float Location::getYCoord()
     {
         return yCoord;
     }
@@ -27,15 +28,15 @@ namespace LockFreeDispatch {
     // Set yCoord
     void Location::setYCoord(float coord)
     {
-        yCoord = reinterpret_cast<std::atomic<float> *>(&coord);
+        yCoord = coord;
     }
 
-    double Location::calculateDistance(Location locationA, Location locationB)
+    double Location::calculateDistance(Location *locationA, Location *locationB)
     {
-        float xDist = locationA.getXCoord() - locationB.getXCoord();
-        float yDist = locationA.getYCoord() - locationB.getYCoord();
-        double xDistSquared = std::pow((double) xDist, 2.0);
-        double yDistSquared = std::pow((double) yDist, 2.0);
+        float xDist = locationA->getXCoord() - locationB->getXCoord();
+        float yDist = locationA->getYCoord() - locationB->getYCoord();
+        double xDistSquared = std::pow(xDist, 2.0);
+        double yDistSquared = std::pow(yDist, 2.0);
         return std::sqrt(xDistSquared + yDistSquared);
     }
 
@@ -52,6 +53,7 @@ namespace LockFreeDispatch {
         {
             moveLocation(destination);
         });
+        moveLocation_thread.detach();
     }
 
     void Location::moveLocation(Location destination)
@@ -62,36 +64,14 @@ namespace LockFreeDispatch {
         // (-1)^0 (false boolean) == 1
         // (-1)^1 (true boolean) == -1
         bool xDirectionOfTravelBool = (destination.getXCoord() - xCoord) < 0;
-        float xDirectionOfTravel = (float) std::pow(-1, xDirectionOfTravelBool);
+        float xDirectionOfTravel = std::pow(-1, xDirectionOfTravelBool);
         bool yDirectionOfTravelBool = (destination.getYCoord() - yCoord) < 0;
-        float yDirectionOfTravel = (float) std::pow(-1, yDirectionOfTravelBool);
+        float yDirectionOfTravel = std::pow(-1, yDirectionOfTravelBool);
 
         while (xCoord != destination.getXCoord() && yCoord != destination.getYCoord() && inTransit)
         {
-            // Increment the coordinate value by 0.01 in proper direction using CAS
-            if (xCoord != destination.getXCoord())
-            {
-                float oldXCoord;
-                float newXCoord;
-                do
-                {
-                    oldXCoord = *xCoord;
-                    newXCoord = 0.01 * xDirectionOfTravel;
-                }
-                while (!xCoord->compare_exchange_weak(oldXCoord, newXCoord));
-            }
-
-            if (yCoord != destination.getYCoord())
-            {
-                float oldYCoord;
-                float newYCoord;
-                do
-                {
-                    oldYCoord = *yCoord;
-                    newYCoord = 0.01 * yDirectionOfTravel;
-                }
-                while (!yCoord->compare_exchange_weak(oldYCoord, newYCoord));
-            }
+            xCoord += 0.01 * xDirectionOfTravel;
+            yCoord += 0.01 * yDirectionOfTravel;
 
             // Sleep for 1 millisecond to simulate travel time
             std::this_thread::sleep_for(std::chrono::milliseconds(1) );
