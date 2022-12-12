@@ -53,8 +53,15 @@ namespace LockFreeDispatch {
             vehicles.push_back(row);
         }
 
+        bool header = true;
+
         for (std::vector<std::string> entry : vehicles)
         {
+            if (header)
+            {
+                header = false;
+                continue;
+            }
             std::string vehicleType = entry.at(1);
             Vehicle newVehicle{};
             if (vehicleType == "Engine")
@@ -72,6 +79,7 @@ namespace LockFreeDispatch {
             newVehicle.setCurNumCrew(stoi(entry.at(4)));
             newVehicle.setMaxWaterVolumeLitres(stof(entry.at(5)));
             newVehicle.setCurWaterVolumeLitres(stof(entry.at(6)));
+            newVehicle.setWorkFactor(stof(entry.at(7)));
 
             districtVehicles.push_back(newVehicle);
         }
@@ -95,8 +103,16 @@ namespace LockFreeDispatch {
             stations.push_back(row);
         }
 
+        bool header = true;
+
         for (std::vector<std::string> entry : stations)
         {
+            if (header)
+            {
+                header = false;
+                continue;
+            }
+
             FireStation newStation{};
 
             auto newLocation = new Location();
@@ -130,8 +146,15 @@ namespace LockFreeDispatch {
             events.push_back(row);
         }
 
+        bool header = true;
+
         for (std::vector<std::string> entry : events)
         {
+            if (header)
+            {
+                header = false;
+                continue;
+            }
             std::string eventType = entry.at(3);
             if (eventType == "CriticalSituation")
             {
@@ -167,8 +190,16 @@ namespace LockFreeDispatch {
                 row.push_back(word);
             reqts.push_back(row);
         }
+
+        bool header = true;
+
         for (std::vector<std::string> entry : reqts)
         {
+            if (header)
+            {
+                header = false;
+                continue;
+            }
             uint16_t vehicleReqtId = stoi(entry.at(0));
 
             if (entry.at(1) == "FireEngine")
