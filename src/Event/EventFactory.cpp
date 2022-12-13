@@ -165,9 +165,9 @@ namespace LockFreeDispatch {
         for (auto vehicle : dispatchedVehicles)
         {
             // Create a thread to handle this vehicle for this event
-            std::thread curVehicle_thread([this, &vehicle, curEvent]()
+            std::thread curVehicle_thread([this, &vehicle, curEvent, bitArray]()
             {
-                processVehicle(&vehicle, curEvent);
+                processVehicle(&vehicle, curEvent, bitArray);
             });
             curVehicle_thread.detach();
         }
@@ -176,7 +176,7 @@ namespace LockFreeDispatch {
         std::cout << "Dispatched event #" << curEvent->getEventID() << std::endl;
     }
 
-    void EventFactory::processVehicle(Vehicle *curVehicle, Event *curEvent)
+    void EventFactory::processVehicle(Vehicle *curVehicle, Event *curEvent, BitArray *bitArray)
     {
         // Start travel towards event location
         curVehicle->getVehicleLocation()->setInTransitFalse();
@@ -187,6 +187,9 @@ namespace LockFreeDispatch {
 
         // Sleep for duration of event
         std::this_thread::sleep_for(std::chrono::milliseconds(curEvent->getDurationSeconds()) );
+
+        // Set vehicle to available on bitArray
+        bitArray->modifyBitArray(curVehicle->getVehicleID(), false);
 
         // Start moving vehicle back to home station
         curVehicle->getVehicleLocation()->moveLocationWrapper(*curVehicle->getHomeFireStation().getFireStationLocation());

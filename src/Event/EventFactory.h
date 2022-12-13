@@ -28,7 +28,7 @@ namespace LockFreeDispatch {
 
             void processEvent(Event *curEvent, DistrictResources *districtResources, BitArray *bitArray);
 
-            void processVehicle(Vehicle *curVehicle, Event *curEvent);
+            void processVehicle(Vehicle *curVehicle, Event *curEvent, BitArray *bitArray);
 
             void removeEventActiveQueue(uint32_t eventID);
 
