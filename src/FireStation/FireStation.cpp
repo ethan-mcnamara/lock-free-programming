@@ -73,4 +73,16 @@ namespace LockFreeDispatch {
     {
         curNumVehicles = newNumVehicles;
     }
+
+    FireStation::FireStation(uint32_t id, Location *location, uint16_t maxCrew, uint16_t curCrew, uint8_t maxVehicles,
+                             uint8_t curVehicles)
+                             {
+        fireStationID = id;
+        fireStationLocation = location;
+        maxNumCrew = maxCrew;
+        curNumCrew = curCrew;
+        maxNumVehicles = maxVehicles;
+        curNumVehicles = curVehicles;
+
+    }
 } // LockFreeDispatch

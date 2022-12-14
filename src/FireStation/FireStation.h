@@ -10,11 +10,13 @@ namespace LockFreeDispatch {
             uint32_t fireStationID;
             Location *fireStationLocation;
             uint16_t maxNumCrew;
-            uint8_t maxNumVehicles;
             uint16_t curNumCrew;
+            uint8_t maxNumVehicles;
             uint8_t curNumVehicles;
 
         public:
+            FireStation(uint32_t id, Location *location, uint16_t maxCrew, uint16_t curCrew, uint8_t maxVehicles, uint8_t curVehicles);
+
             uint32_t getFireStationID() const;
 
             void setFireStationID(uint32_t id);
@@ -31,13 +33,13 @@ namespace LockFreeDispatch {
 
             void setMaxNumVehicles(uint8_t vehicleNum);
 
-        uint16_t getCurNumCrew() const;
+            uint16_t getCurNumCrew() const;
 
-        void setCurNumCrew(uint16_t newNumCrew);
+            void setCurNumCrew(uint16_t newNumCrew);
 
-        uint8_t getCurNumVehicles() const;
+            uint8_t getCurNumVehicles() const;
 
-        void setCurNumVehicles(uint8_t newNumVehicles);
+            void setCurNumVehicles(uint8_t newNumVehicles);
     };
 
 } // LockFreeDispatch
