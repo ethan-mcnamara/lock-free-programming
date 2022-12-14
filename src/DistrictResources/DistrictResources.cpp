@@ -12,7 +12,7 @@ namespace LockFreeDispatch {
 
     void DistrictResources::populateDistrictVehicles(const std::vector<Vehicle>& vehicles)
     {
-        for (auto vehicle : vehicles)
+        for (const auto & vehicle : vehicles)
         {
             districtVehicles.push_back(vehicle);
         }
@@ -20,14 +20,14 @@ namespace LockFreeDispatch {
 
     void DistrictResources::populateDistrictFireStations(const std::vector<FireStation>& stations)
     {
-        for (auto station : stations)
+        for (const auto & station : stations)
         {
             districtFireStations.push_back(station);
         }
     }
 
     FireStation DistrictResources::findFireStation(uint32_t fireStationID) {
-        for (auto station : districtFireStations)
+        for (const auto & station : districtFireStations)
         {
             if (station.getFireStationID() == fireStationID)
             {
