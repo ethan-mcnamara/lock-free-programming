@@ -8,7 +8,7 @@
 namespace LockFreeDispatch {
 
     // Get xCoord
-    float Location::getXCoord()
+    float Location::getXCoord() const
     {
         return xCoord;
     }
@@ -20,7 +20,7 @@ namespace LockFreeDispatch {
     }
 
     // Get yCoord
-    float Location::getYCoord()
+    float Location::getYCoord() const
     {
         return yCoord;
     }
@@ -31,10 +31,10 @@ namespace LockFreeDispatch {
         yCoord = coord;
     }
 
-    double Location::calculateDistance(Location *locationA, Location *locationB)
+    double calculateDistance(const Location & locationA, const Location & locationB)
     {
-        float xDist = locationA->getXCoord() - locationB->getXCoord();
-        float yDist = locationA->getYCoord() - locationB->getYCoord();
+        float xDist = locationA.getXCoord() - locationB.getXCoord();
+        float yDist = locationA.getYCoord() - locationB.getYCoord();
         double xDistSquared = std::pow(xDist, 2.0);
         double yDistSquared = std::pow(yDist, 2.0);
         return std::sqrt(xDistSquared + yDistSquared);

@@ -15,11 +15,11 @@ namespace LockFreeDispatch {
 
         public:
 
-            float getXCoord();
+            float getXCoord() const;
 
             void setXCoord(float coord);
 
-            float getYCoord();
+            float getYCoord() const;
 
             void setYCoord(float coord);
 
