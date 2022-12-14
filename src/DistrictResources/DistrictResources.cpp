@@ -250,8 +250,7 @@ namespace LockFreeDispatch {
     }
 
     std::vector<Vehicle> *DistrictResources::getOrderedVehicleList(Location *eventLocation) {
-        std::vector<Vehicle> *orderedList;
-        orderedList->begin() = std::copy(districtVehicles.begin(), districtVehicles.end(), districtVehicles.begin());
+        std::vector<Vehicle> *orderedList = new std::vector<Vehicle> (districtVehicles);
 
         // Classic bubble sort, chosen for ease of implementation since there are always <64 vehicles
         // it will always run in O(1) time
