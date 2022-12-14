@@ -16,8 +16,6 @@ namespace LockFreeDispatch {
             std::unordered_map<uint32_t, std::vector<Vehicle>> vehicleRequirements;
 
         public:
-            void populateDistrictVehicles(const std::vector<Vehicle>& vehicles);
-            void populateDistrictFireStations(const std::vector<FireStation>& stations);
             FireStation findFireStation(uint32_t fireStationID);
             void processVehicleSampleData(const std::string& fileName);
             void processFireStationSampleData(const std::string& fileName);
