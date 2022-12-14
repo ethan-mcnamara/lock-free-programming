@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <memory>
 #include "../Vehicle/Vehicle.h"
 #include "../Event/Event.h"
 
@@ -10,8 +11,8 @@ namespace LockFreeDispatch {
 
     class DistrictResources {
         private:
-            std::vector<Vehicle> districtVehicles;
-            std::vector<FireStation> districtFireStations;
+            std::vector< std::unique_ptr< Vehicle > > districtVehicles;
+            std::vector< std::unique_ptr < FireStation > > districtFireStations;
             std::unordered_map<uint32_t, std::vector<Vehicle>> vehicleRequirements;
 
         public:

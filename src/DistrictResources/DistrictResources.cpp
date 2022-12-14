@@ -2,6 +2,8 @@
 #include <sstream>
 #include <iostream>
 #include <valarray>
+#include <optional>
+#include <memory>
 #include "DistrictResources.h"
 #include "../Vehicle/FireEngine.h"
 #include "../Vehicle/FireLadder.h"
@@ -34,7 +36,7 @@ namespace LockFreeDispatch {
                 return station;
             }
         }
-        return {};
+        return FireStation{};
     }
 
     void DistrictResources::processVehicleSampleData(const std::string& fileName)
@@ -65,26 +67,30 @@ namespace LockFreeDispatch {
                 continue;
             }
             std::string vehicleType = entry.at(1);
-            Vehicle newVehicle{};
+
+            auto const vehicleId = stoi( entry.at( 0 ) );
+            auto const homeFireStation = findFireStation( stoi( entry.at( 2 ) ) );
+            auto const location = findFireStation(stoi(entry.at(2))).getFireStationLocation();
+            auto const maxNumCrew = stoi(entry.at(3));
+            auto const curNumCrew = stoi(entry.at(4));
+            auto const maxWaterVolumeLitres = stof(entry.at(5));
+            auto const curWaterVolumeLitres = stof(entry.at(6));
+            auto const workFactor = stof(entry.at(7));
+
             if (vehicleType == "Engine")
             {
-                newVehicle = *new FireEngine();
+                districtVehicles.push_back( std::make_unique<FireEngine>( FireEngine(vehicleId, location,
+                                                                          homeFireStation, maxNumCrew, curNumCrew, maxWaterVolumeLitres,
+                                                                          curWaterVolumeLitres, VehicleStatus::Available, workFactor ) ));
+                std::cout << "Adding vehicle #" << vehicleId << " to global list" <<std::endl;
             }
             else if (vehicleType == "Ladder")
             {
-                newVehicle = *new FireLadder();
+                districtVehicles.push_back( std::make_unique<FireLadder>( FireLadder(vehicleId, location,
+                                                                                     homeFireStation, maxNumCrew, curNumCrew, maxWaterVolumeLitres,
+                                                                                     curWaterVolumeLitres, VehicleStatus::Available, workFactor ) ));
+                std::cout << "Adding vehicle #" << vehicleId << " to global list" <<std::endl;
             }
-
-            newVehicle.setVehicleID(stoi(entry.at(0)));
-            newVehicle.setHomeFireStation(findFireStation(stoi(entry.at(2))));
-            newVehicle.setMaxNumCrew(stoi(entry.at(3)));
-            newVehicle.setCurNumCrew(stoi(entry.at(4)));
-            newVehicle.setMaxWaterVolumeLitres(stof(entry.at(5)));
-            newVehicle.setCurWaterVolumeLitres(stof(entry.at(6)));
-            newVehicle.setWorkFactor(stof(entry.at(7)));
-
-            std::cout << "Adding vehicle #" << newVehicle.getVehicleID() << " to global list" <<std::endl;
-            districtVehicles.push_back(newVehicle);
         }
     }
 
