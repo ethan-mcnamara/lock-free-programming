@@ -13,7 +13,7 @@ namespace LockFreeDispatch {
         private:
             std::vector< std::unique_ptr< Vehicle > > districtVehicles;
             std::vector< std::unique_ptr < FireStation > > districtFireStations;
-            std::unordered_map<uint32_t, std::vector<Vehicle>> vehicleRequirements;
+            std::unordered_map<uint32_t, std::vector< std::unique_ptr< Vehicle > > > vehicleRequirements;
 
         public:
             FireStation findFireStation(uint32_t fireStationID);
@@ -21,8 +21,8 @@ namespace LockFreeDispatch {
             void processFireStationSampleData(const std::string& fileName);
             void processEventSampleData(const std::string &fileName, std::vector<Event> *pendingQueue);
             void processVehicleRequirementsSampleData(const std::string &fileName);
-            std::vector<Vehicle> *getVehicleRequirements(uint32_t eventID);
-            std::vector<Vehicle> *getOrderedVehicleList(Location *eventLocation);
+            std::vector<std::unique_ptr<Vehicle>> getVehicleRequirements(uint32_t eventID);
+            std::vector<Vehicle> *getOrderedVehicleList(const Location &eventLocation);
     };
 
 } // LockFreeDispatch

@@ -57,4 +57,12 @@ namespace LockFreeDispatch {
         maxNumCrew = maxCrew;
         curNumCrew = curCrew;
     }
+
+    FireStation::FireStation()
+    {
+        fireStationID = -1;
+        fireStationLocation = Location();
+        maxNumCrew = 0;
+        curNumCrew = 0;
+    }
 } // LockFreeDispatch

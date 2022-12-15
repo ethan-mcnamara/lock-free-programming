@@ -179,8 +179,8 @@ namespace LockFreeDispatch {
     void EventFactory::processVehicle(Vehicle *curVehicle, Event *curEvent, BitArray *bitArray)
     {
         // Start travel towards event location
-        curVehicle->getVehicleLocation()->setInTransitFalse();
-        curVehicle->getVehicleLocation()->moveLocationWrapper(*curEvent->getLocation());
+        curVehicle->getVehicleLocation().setInTransitFalse();
+        curVehicle->getVehicleLocation().moveLocationWrapper(*curEvent->getLocation());
 
         // Wait until vehicle arrives at event location
         while(Location::calculateDistance(curVehicle->getVehicleLocation(), curEvent->getLocation()) != 0);

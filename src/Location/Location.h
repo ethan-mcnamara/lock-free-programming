@@ -26,7 +26,7 @@ namespace LockFreeDispatch {
 
             void setYCoord(float coord);
 
-            static double calculateDistance(Location *locationA, Location *locationB);
+            static double calculateDistance(const Location & locationA, const Location & locationB);
 
             void moveLocationWrapper(Location destination);
 

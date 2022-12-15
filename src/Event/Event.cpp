@@ -53,13 +53,13 @@ namespace LockFreeDispatch {
     Event::Event() = default;
 
     // Get eventLocation
-    Location *Event::getLocation()
+    Location Event::getLocation()
     {
         return eventLocation;
     }
 
     // Set eventLocation
-    void Event::setLocation(Location *newLocation)
+    void Event::setLocation(Location newLocation)
     {
         eventLocation = newLocation;
     }

@@ -31,7 +31,7 @@ namespace LockFreeDispatch {
         yCoord = coord;
     }
 
-    double calculateDistance(const Location & locationA, const Location & locationB)
+    static double calculateDistance(const Location & locationA, const Location & locationB)
     {
         float xDist = locationA.getXCoord() - locationB.getXCoord();
         float yDist = locationA.getYCoord() - locationB.getYCoord();

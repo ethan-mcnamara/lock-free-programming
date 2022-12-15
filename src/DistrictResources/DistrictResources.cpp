@@ -195,48 +195,29 @@ namespace LockFreeDispatch {
             }
             uint16_t vehicleReqtId = stoi(entry.at(0));
 
-            if (entry.at(1) == "FireEngine")
-            {
-                FireEngine newReqt = FireEngine();
-                newReqt.setCurWaterVolumeLitres(stof(entry.at(2)));
-                newReqt.setCurNumCrew(stoi(entry.at(3)));
-                if (vehicleRequirements.find(vehicleReqtId) == vehicleRequirements.end())
-                {
-                    vehicleRequirements[vehicleReqtId] = *new std::vector<Vehicle>;
-                }
-                std::cout << "Adding vehicle with Requirement ID: #" << vehicleReqtId << " to global list" << std::endl;
-                vehicleRequirements[vehicleReqtId].push_back(newReqt);
-            }
-            else if (entry.at(1) == "FireLadder")
-            {
-                FireLadder newReqt = FireLadder();
-                newReqt.setCurWaterVolumeLitres(stof(entry.at(2)));
-                newReqt.setCurNumCrew(stoi(entry.at(3)));
-                if (vehicleRequirements.find(vehicleReqtId) == vehicleRequirements.end())
-                {
-                    vehicleRequirements[vehicleReqtId] = *new std::vector<Vehicle>;
-                }
+            std::string vehicleType = entry.at(1);
+            auto const volWater = stoi(entry.at(2));
+            auto const numCrew = stoi(entry.at(3));
 
+            if (vehicleType == "Engine")
+            {
+                vehicleRequirements[vehicleReqtId].push_back( std::make_unique<FireEngine>( FireEngine(numCrew, volWater) ) );
                 std::cout << "Adding vehicle with Requirement ID: #" << vehicleReqtId << " to global list" << std::endl;
-                vehicleRequirements[vehicleReqtId].push_back(newReqt);
             }
+            else if (vehicleType == "Ladder")
+            {
+                vehicleRequirements[vehicleReqtId].push_back( std::make_unique<FireLadder>( FireLadder(numCrew, volWater) ) );
+                std::cout << "Adding vehicle with Requirement ID: #" << vehicleReqtId << " to global list" << std::endl;
+            }
+
         }
     }
 
-    std::vector<Vehicle> *DistrictResources::getVehicleRequirements(uint32_t eventID) {
-        return &vehicleRequirements[eventID];
+    std::vector<std::unique_ptr<Vehicle>> DistrictResources::getVehicleRequirements(uint32_t eventID) {
+        return vehicleRequirements[eventID];
     }
 
-    double calculateDistance(Location *locationA, Location *locationB)
-    {
-        float xDist = locationA->getXCoord() - locationB->getXCoord();
-        float yDist = locationA->getYCoord() - locationB->getYCoord();
-        double xDistSquared = std::pow(xDist, 2.0);
-        double yDistSquared = std::pow(yDist, 2.0);
-        return std::sqrt(xDistSquared + yDistSquared);
-    }
-
-    std::vector<Vehicle> *DistrictResources::getOrderedVehicleList(Location *eventLocation) {
+    std::vector<Vehicle> *DistrictResources::getOrderedVehicleList(const Location &eventLocation) {
         std::vector<Vehicle> *orderedList = new std::vector<Vehicle> (districtVehicles);
 
         // Classic bubble sort, chosen for ease of implementation since there are always <64 vehicles
