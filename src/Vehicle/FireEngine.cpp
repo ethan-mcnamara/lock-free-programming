@@ -1,4 +1,5 @@
 #include "FireEngine.h"
+#include <cstdint>
 
 namespace LockFreeDispatch {
     FireEngine::FireEngine(uint32_t id, Location location, FireStation station, uint16_t maxCrew, uint16_t curCrew,
@@ -14,4 +15,17 @@ namespace LockFreeDispatch {
                                setCurVehicleStatus(status);
                                setWorkFactor(wFactor);
                            }
+
+    FireEngine::FireEngine(uint16_t numCrew, float volWater)
+    {
+        setCurNumCrew(numCrew);
+        setCurWaterVolumeLitres(volWater);
+        setVehicleID(-1);
+        setVehicleLocation(Location());
+        setMaxNumCrew(numCrew);
+        setMaxWaterVolumeLitres(volWater);
+        setCurVehicleStatus(VehicleStatus::Available);
+        setWorkFactor(1);
+        setHomeFireStation(FireStation());
+    }
 } // LockFreeDispatch

@@ -15,4 +15,17 @@ namespace LockFreeDispatch {
 
 
     }
+
+    FireLadder::FireLadder(uint16_t numCrew, float volWater)
+    {
+        setCurNumCrew(numCrew);
+        setCurWaterVolumeLitres(volWater);
+        setVehicleID(-1);
+        setVehicleLocation(Location());
+        setMaxNumCrew(numCrew);
+        setMaxWaterVolumeLitres(volWater);
+        setCurVehicleStatus(VehicleStatus::Available);
+        setWorkFactor(1);
+        setHomeFireStation(FireStation());
+    }
 }// LockFreeDispatch
