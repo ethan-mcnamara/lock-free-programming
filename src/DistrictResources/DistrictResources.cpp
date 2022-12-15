@@ -15,12 +15,12 @@ namespace LockFreeDispatch {
     FireStation DistrictResources::findFireStation(uint32_t fireStationID) {
         for (const auto & station : districtFireStations)
         {
-            if (station.getFireStationID() == fireStationID)
+            if (station->getFireStationID() == fireStationID)
             {
-                return station;
+                return (const FireStation &) station;
             }
         }
-        return FireStation{};
+        exit(-1);
     }
 
     void DistrictResources::processVehicleSampleData(const std::string& fileName)
