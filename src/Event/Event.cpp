@@ -71,12 +71,6 @@ namespace LockFreeDispatch {
         eventLocation = newLocation;
     }
 
-    // Get all vehicleRequirements
-    std::vector<Vehicle*> Event::getVehicleRequirements()
-    {
-        return vehicleRequirements;
-    }
-
     // Add new vehicleRequirement
     void Event::addVehicleRequirementId(uint16_t newVehicleRequirementId)
     {

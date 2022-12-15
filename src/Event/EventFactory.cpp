@@ -118,7 +118,7 @@ namespace LockFreeDispatch {
     }
 
     float EventFactory::calculateAverageWorkFactor(std::vector<Vehicle> vehicleList) {
-        float listSize = vehicleList.size();
+        size_t listSize = vehicleList.size();
         float workFactorSum = 0;
         for (auto vehicle : vehicleList)
         {

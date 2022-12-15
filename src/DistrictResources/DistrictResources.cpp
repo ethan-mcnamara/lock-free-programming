@@ -149,19 +149,14 @@ namespace LockFreeDispatch {
             std::string eventType = entry.at(3);
             if (eventType == "CriticalSituation")
             {
-                Event newEvent = *new Event();
-                newEvent.setEventID(stoi(entry.at(0)));
-                newEvent.setStartTime(Time::stringToTime(entry.at(1)));
-                newEvent.setDurationSeconds(stoi(entry.at(2)));
-                Location *newLocation = new Location();
-                newLocation->setXCoord(stof(entry.at(4)));
-                newLocation->setYCoord(stof(entry.at(5)));
-                newEvent.setLocation(newLocation);
-                newEvent.addVehicleRequirementId(stoi(entry.at(6)));
-
+                auto const eventID = stoi(entry.at(0));
+                auto const startTime = Time::stringToTime(entry.at(1));
+                auto const durationSeconds = stoi(entry.at(2));
+                auto const location = Location(stof(entry.at(4)), stof(entry.at(5)));
+                auto const vehicleRequirementsId = stoi(entry.at(6));
+                pendingQueue->push_back(Event(eventID, startTime, durationSeconds, location, vehicleRequirementsId));
+//
                 std::cout << "Adding Event #" << entry.at(0) << " to pending queue" << std::endl;
-
-                pendingQueue->push_back(newEvent);
             }
         }
     }
@@ -218,7 +213,7 @@ namespace LockFreeDispatch {
     }
 
     std::vector<Vehicle> *DistrictResources::getOrderedVehicleList(const Location &eventLocation) {
-        std::vector<Vehicle> *orderedList = new std::vector<Vehicle> (districtVehicles);
+        std::vector< std::unique_ptr < Vehicle > > orderedList = new std::vector<Vehicle> (districtVehicles);
 
         // Classic bubble sort, chosen for ease of implementation since there are always <64 vehicles
         // it will always run in O(1) time
