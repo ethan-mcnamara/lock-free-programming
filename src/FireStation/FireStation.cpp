@@ -15,13 +15,13 @@ namespace LockFreeDispatch {
     }
 
     // Get fireStationLocation
-    Location * FireStation::getFireStationLocation()
+    Location FireStation::getFireStationLocation()
     {
         return fireStationLocation;
     }
 
     // Set fireStationLocation
-    void FireStation::setFireStationLocation(Location *location)
+    void FireStation::setFireStationLocation(Location location)
     {
         fireStationLocation = location;
     }
@@ -38,18 +38,6 @@ namespace LockFreeDispatch {
         maxNumCrew = crewNum;
     }
 
-    // Get maxNumVehicles
-    uint8_t FireStation::getMaxNumVehicles() const
-    {
-        return maxNumVehicles;
-    }
-
-    // Set maxNumVehicles
-    void FireStation::setMaxNumVehicles(uint8_t vehicleNum)
-    {
-        maxNumVehicles = vehicleNum;
-    }
-
     // Get curNumCrew
     uint16_t FireStation::getCurNumCrew() const
     {
@@ -62,27 +50,11 @@ namespace LockFreeDispatch {
         curNumCrew = newNumCrew;
     }
 
-    // Get curNumVehicles
-    uint8_t FireStation::getCurNumVehicles() const
+    FireStation::FireStation(uint32_t id, Location location, uint16_t maxCrew, uint16_t curCrew)
     {
-        return curNumVehicles;
-    }
-
-    // Set curNumvehicles
-    void FireStation::setCurNumVehicles(uint8_t newNumVehicles)
-    {
-        curNumVehicles = newNumVehicles;
-    }
-
-    FireStation::FireStation(uint32_t id, Location *location, uint16_t maxCrew, uint16_t curCrew, uint8_t maxVehicles,
-                             uint8_t curVehicles)
-                             {
         fireStationID = id;
         fireStationLocation = location;
         maxNumCrew = maxCrew;
         curNumCrew = curCrew;
-        maxNumVehicles = maxVehicles;
-        curNumVehicles = curVehicles;
-
     }
 } // LockFreeDispatch

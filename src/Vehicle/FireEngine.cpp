@@ -1,7 +1,7 @@
 #include "FireEngine.h"
 
 namespace LockFreeDispatch {
-    FireEngine::FireEngine(uint32_t id, Location *location, FireStation station, uint16_t maxCrew, uint16_t curCrew,
+    FireEngine::FireEngine(uint32_t id, Location location, FireStation station, uint16_t maxCrew, uint16_t curCrew,
                            float maxWater, float curWater, VehicleStatus status, float wFactor)
                            {
                                setVehicleID(id);

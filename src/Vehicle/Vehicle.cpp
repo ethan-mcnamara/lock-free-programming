@@ -15,13 +15,13 @@ namespace LockFreeDispatch {
     }
 
     // Get vehicleLocation
-    Location * Vehicle::getVehicleLocation()
+    Location Vehicle::getVehicleLocation()
     {
         return vehicleLocation;
     }
 
     // Set vehicleLocation
-    void Vehicle::setVehicleLocation(Location *newLocation)
+    void Vehicle::setVehicleLocation(Location newLocation)
     {
         vehicleLocation = newLocation;
     }
@@ -98,7 +98,7 @@ namespace LockFreeDispatch {
         curVehicleStatus = newStatus;
     }
 
-    float Vehicle::getWorkFactor()
+    float Vehicle::getWorkFactor() const
     {
         return workFactor;
     }
@@ -107,6 +107,4 @@ namespace LockFreeDispatch {
     {
         workFactor = newWorkFactor;
     }
-
-    Vehicle::Vehicle() = default;
 } // LockFreeDispatch

@@ -106,19 +106,16 @@ namespace LockFreeDispatch {
                 continue;
             }
 
-            FireStation newStation{};
+            auto const x = stof(entry.at(1));
+            auto const y = stof(entry.at(2));
+            auto const location = Location(x, y);
+            auto const stationId = stoi(entry.at(0));
+            auto const maxCrew = stoi(entry.at(3));
+            auto const curCrew = stoi(entry.at(4));
 
-            auto newLocation = new Location();
-            newLocation->setXCoord(stof(entry.at(1)));
-            newLocation->setYCoord(stof(entry.at(2)));
+            districtFireStations.push_back( std::make_unique<FireStation>( FireStation(stationId, location, maxCrew, curCrew) ));
 
-            newStation.setFireStationID(stoi(entry.at(0)));
-            newStation.setFireStationLocation(newLocation);
-            newStation.setMaxNumCrew(stoi(entry.at(3)));
-            newStation.setCurNumCrew(stoi(entry.at(4)));
-
-            std::cout << "Adding Fire Station #" << newStation.getFireStationID() << " to global list" << std::endl;
-            districtFireStations.push_back(newStation);
+            std::cout << "Adding Fire Station #" << stationId << " to global list" << std::endl;
         }
     }
 
