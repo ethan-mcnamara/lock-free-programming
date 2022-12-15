@@ -88,4 +88,18 @@ namespace LockFreeDispatch {
     {
         inTransit = false;
     }
+
+    Location::Location(float x, float y)
+    {
+        xCoord = x;
+        yCoord = y;
+        inTransit = false;
+    }
+
+    Location::Location()
+    {
+        xCoord = 0;
+        yCoord = 0;
+        inTransit = false;
+    }
 } // LockFreeDispatch

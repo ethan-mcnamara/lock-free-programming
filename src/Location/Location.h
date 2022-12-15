@@ -14,6 +14,9 @@ namespace LockFreeDispatch {
             void moveLocation(Location destination);
 
         public:
+            Location(float x, float y);
+
+            Location();
 
             float getXCoord() const;
 
