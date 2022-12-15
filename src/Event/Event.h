@@ -7,6 +7,7 @@
 #include "../Location/Location.h"
 class Vehicle;
 #include <vector>
+#include <memory>
 
 namespace LockFreeDispatch {
 
@@ -17,10 +18,11 @@ namespace LockFreeDispatch {
         uint64_t durationSeconds;
         bool dispatched;
         Location eventLocation;
-        std::vector<Vehicle*> vehicleRequirements;
         uint16_t vehicleRequirementId;
     public:
         Event();
+
+        Event(uint32_t id, Time start, uint64_t duration, Location location, uint16_t requirementsId);
 
         uint32_t getEventID() const;
 

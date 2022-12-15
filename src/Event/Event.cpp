@@ -50,7 +50,14 @@ namespace LockFreeDispatch {
         dispatched = dispatchStatus;
     }
 
-    Event::Event() = default;
+    Event::Event()
+    {
+        eventID = -1;
+        startTime = Time();
+        durationSeconds = 0;
+        dispatched = false;
+        vehicleRequirementId = -1;
+    }
 
     // Get eventLocation
     Location Event::getLocation()
@@ -76,28 +83,13 @@ namespace LockFreeDispatch {
         vehicleRequirementId = newVehicleRequirementId;
     }
 
-    // Pop single vehicleRequirement from list
-    Vehicle *Event::popVehicleRequirement()
-    {
-        if (vehicleRequirements.empty()) return nullptr;
-        Vehicle* toReturn = vehicleRequirements.back();
-        vehicleRequirements.pop_back();
-        return toReturn;
-    }
-
-    // Delete all vehicleRequirements
-    void Event::deleteVehicleRequirements()
-    {
-        vehicleRequirements.clear();
-    }
-
-    // Find vehicleRequirement
-    bool Event::findVehicleRequirement(Vehicle *vehicle)
-    {
-        for (auto requirement : vehicleRequirements)
-        {
-            if (requirement == vehicle) return true;
-        }
-        return false;
+    Event::Event(uint32_t id, Time start, uint64_t duration, Location location, uint16_t requirementsId)
+                 {
+        eventID = id;
+        startTime = start;
+        durationSeconds = duration;
+        eventLocation = location;
+        vehicleRequirementId = requirementsId;
+        dispatched = false;
     }
 } // LockFreeDispatch
