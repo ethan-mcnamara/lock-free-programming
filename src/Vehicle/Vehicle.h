@@ -19,7 +19,10 @@ namespace LockFreeDispatch {
         VehicleStatus curVehicleStatus;
         float workFactor;
     public:
-        Vehicle();
+        Vehicle(uint32_t id, Location location, FireStation station, uint16_t maxCrew, uint16_t curCrew,
+                         float maxWater, float curWater, VehicleStatus status, float wFactor);
+
+        Vehicle(uint16_t numCrew, float volWater);
 
         uint32_t getVehicleID() const;
 

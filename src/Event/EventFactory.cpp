@@ -1,6 +1,7 @@
 #include "EventFactory.h"
 #include "../VehicleStatus/VehicleStatus.h"
 #include "../Time/Time.h"
+#include "../Location/Location.h"
 #include "Event.h"
 #include <type_traits>
 #include <atomic>
@@ -11,17 +12,19 @@
 namespace LockFreeDispatch {
 
 
-    std::vector<Vehicle> EventFactory::vehiclesMeetingRequirements(std::vector<Vehicle> *vehicleReqts,
-                                                                   std::vector<Vehicle> *orderedVehicles) {
-        std::vector<Vehicle> meetingRequirements;
+    std::vector<Vehicle *> EventFactory::vehiclesMeetingRequirements(
+            std::vector<Vehicle *> vehicleReqts,
+            std::vector<Vehicle *> orderedVehicles) {
 
-        for (auto vehicle : *orderedVehicles)
+        std::vector<Vehicle*> meetingRequirements;
+
+        for (const auto & vehicle : orderedVehicles)
         {
-            for (auto reqt : *vehicleReqts)
+            for (const auto & reqt : vehicleReqts)
             {
                 // TODO - should confirm the Engine/Ladder type
-                if (vehicle.getCurNumCrew() >= reqt.getCurNumCrew()
-                    && vehicle.getCurWaterVolumeLitres() >= reqt.getCurWaterVolumeLitres())
+                if (vehicle->getCurNumCrew() >= reqt->getCurNumCrew()
+                    && vehicle->getCurWaterVolumeLitres() >= reqt->getCurWaterVolumeLitres())
                 {
                     meetingRequirements.push_back(vehicle);
                 }
@@ -30,21 +33,22 @@ namespace LockFreeDispatch {
         return meetingRequirements;
     }
 
-    std::vector<Vehicle> EventFactory::selectVehicles(std::vector<Vehicle> *vehicleReqts, std::vector<Vehicle> *orderedVehicles,
-                                                      BitArray *bitArray) {
+    std::vector<Vehicle *> EventFactory::selectVehicles(
+            std::vector<Vehicle *> vehicleReqts, std::vector<Vehicle *> orderedVehicles,
+            BitArray *bitArray) {
         while (true)
         {
-            std::vector<Vehicle> selectedVehicles;
-            uint8_t numVehiclesRequired = vehicleReqts->size();
-            std::vector<Vehicle> listSubset = vehiclesMeetingRequirements(vehicleReqts, orderedVehicles);
+            std::vector<Vehicle*> selectedVehicles;
+            uint8_t numVehiclesRequired = vehicleReqts.size();
+            std::vector<Vehicle*> listSubset = vehiclesMeetingRequirements(vehicleReqts, orderedVehicles);
             float avgWorkFactor = calculateAverageWorkFactor(listSubset);
 
-            for (auto vehicle : listSubset)
+            for (const auto & vehicle : listSubset)
             {
-                if (vehicle.getWorkFactor() >= avgWorkFactor)
+                if (vehicle->getWorkFactor() >= avgWorkFactor)
                 {
-                    if (vehicle.getCurVehicleStatus() == VehicleStatus::Available
-                    || vehicle.getCurVehicleStatus() == VehicleStatus::Returning)
+                    if (vehicle->getCurVehicleStatus() == VehicleStatus::Available
+                    || vehicle->getCurVehicleStatus() == VehicleStatus::Returning)
                     {
                         selectedVehicles.push_back(vehicle);
                         --numVehiclesRequired;
@@ -52,7 +56,7 @@ namespace LockFreeDispatch {
                 }
                 if (numVehiclesRequired == 0)
                 {
-                    if (modifyVehicleStatus(&selectedVehicles, bitArray))
+                    if (modifyVehicleStatus(selectedVehicles, bitArray))
                     {
                         return selectedVehicles;
                     }
@@ -66,15 +70,15 @@ namespace LockFreeDispatch {
                     }
                 }
             }
-            for (auto vehicle : *orderedVehicles) {
-                if (vehicle.getCurVehicleStatus() == VehicleStatus::Available
-                    || vehicle.getCurVehicleStatus() == VehicleStatus::Returning) {
+            for (const auto & vehicle : orderedVehicles) {
+                if (vehicle->getCurVehicleStatus() == VehicleStatus::Available
+                    || vehicle->getCurVehicleStatus() == VehicleStatus::Returning) {
                     selectedVehicles.push_back(vehicle);
                     --numVehiclesRequired;
                 }
                 if (numVehiclesRequired == 0)
                 {
-                    if (modifyVehicleStatus(&selectedVehicles, bitArray))
+                    if (modifyVehicleStatus(selectedVehicles, bitArray))
                     {
                         return selectedVehicles;
                     }
@@ -85,18 +89,18 @@ namespace LockFreeDispatch {
         }
     }
 
-    bool EventFactory::modifyVehicleStatus(std::vector<Vehicle> *vehicleList, BitArray *bitArray) {
+    bool EventFactory::modifyVehicleStatus(std::vector<Vehicle *> vehicleList, BitArray *bitArray) {
         BitArray unmodifiedBitArray;
         unmodifiedBitArray.setGlobalBitArray(bitArray->getGlobalBitArray());
         BitArray modifiedBitArray;
         modifiedBitArray.setGlobalBitArray(bitArray->getGlobalBitArray());
 
-        for (auto vehicle : *vehicleList)
+        for (const auto & vehicle : vehicleList)
         {
-            if (vehicle.getCurVehicleStatus() == VehicleStatus::Available
-            || vehicle.getCurVehicleStatus() == VehicleStatus::Returning)
+            if (vehicle->getCurVehicleStatus() == VehicleStatus::Available
+            || vehicle->getCurVehicleStatus() == VehicleStatus::Returning)
             {
-                modifiedBitArray.setGlobalBitArray(modifiedBitArray.modifyBitArray(vehicle.getVehicleID(), true));
+                modifiedBitArray.setGlobalBitArray(modifiedBitArray.modifyBitArray(vehicle->getVehicleID(), true));
             }
             else
             {
@@ -108,21 +112,21 @@ namespace LockFreeDispatch {
         uint64_t desired = modifiedBitArray.getGlobalBitArray();
         if(bitArray->globalBitArray.compare_exchange_weak(expected, desired))
         {
-            for (auto vehicle : *vehicleList)
+            for (const auto & vehicle : vehicleList)
             {
-                vehicle.setCurVehicleStatus(VehicleStatus::Responding);
+                vehicle->setCurVehicleStatus(VehicleStatus::Responding);
             }
             return true;
         }
         return false;
     }
 
-    float EventFactory::calculateAverageWorkFactor(std::vector<Vehicle> vehicleList) {
+    float EventFactory::calculateAverageWorkFactor(std::vector<Vehicle *> vehicleList) {
         size_t listSize = vehicleList.size();
         float workFactorSum = 0;
         for (auto vehicle : vehicleList)
         {
-            workFactorSum += vehicle.getWorkFactor();
+            workFactorSum += vehicle->getWorkFactor();
         }
         return workFactorSum / listSize;
     }
@@ -156,18 +160,18 @@ namespace LockFreeDispatch {
 
     void EventFactory::processEvent(Event *curEvent, DistrictResources *districtResources, BitArray *bitArray)
     {
-        std::vector<Vehicle> *eventRequirements = districtResources->getVehicleRequirements(curEvent->getEventID());
+        std::vector<Vehicle*> eventRequirements = districtResources->getVehicleRequirements(curEvent->getEventID());
         std::cout << "Before ordered list" << std::endl;
-        std::vector<Vehicle> *orderedList = districtResources->getOrderedVehicleList(curEvent->getLocation());
+        std::vector<Vehicle*> orderedList = districtResources->getOrderedVehicleList(curEvent->getLocation());
         std::cout << "After ordered list" << std::endl;
-        std::vector<Vehicle> dispatchedVehicles = selectVehicles(eventRequirements, orderedList, bitArray);
+        std::vector<Vehicle*> dispatchedVehicles = selectVehicles(eventRequirements, orderedList, bitArray);
 
-        for (auto vehicle : dispatchedVehicles)
+        for (const auto & vehicle : dispatchedVehicles)
         {
             // Create a thread to handle this vehicle for this event
             std::thread curVehicle_thread([this, &vehicle, curEvent, bitArray]()
             {
-                processVehicle(&vehicle, curEvent, bitArray);
+                processVehicle(vehicle, curEvent, bitArray);
             });
             curVehicle_thread.detach();
         }
@@ -180,7 +184,7 @@ namespace LockFreeDispatch {
     {
         // Start travel towards event location
         curVehicle->getVehicleLocation().setInTransitFalse();
-        curVehicle->getVehicleLocation().moveLocationWrapper(*curEvent->getLocation());
+        curVehicle->getVehicleLocation().moveLocationWrapper(curEvent->getLocation());
 
         // Wait until vehicle arrives at event location
         while(Location::calculateDistance(curVehicle->getVehicleLocation(), curEvent->getLocation()) != 0);
@@ -192,14 +196,14 @@ namespace LockFreeDispatch {
         bitArray->modifyBitArray(curVehicle->getVehicleID(), false);
 
         // Start moving vehicle back to home station
-        curVehicle->getVehicleLocation()->moveLocationWrapper(*curVehicle->getHomeFireStation().getFireStationLocation());
+        curVehicle->getVehicleLocation().moveLocationWrapper(curVehicle->getHomeFireStation().getFireStationLocation());
 
         // Allow for slight delay to ensure inTransit is set to True
         std::this_thread::sleep_for(std::chrono::milliseconds(1) );
 
         // Wait until vehicle arrives back at home station or is dispatched elsewhere
         while(Location::calculateDistance(curVehicle->getVehicleLocation(), curVehicle->getHomeFireStation().getFireStationLocation()) != 0
-        || curVehicle->getVehicleLocation()->getInTransit());
+        || curVehicle->getVehicleLocation().getInTransit());
 
     }
 

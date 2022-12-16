@@ -31,15 +31,6 @@ namespace LockFreeDispatch {
         yCoord = coord;
     }
 
-    static double calculateDistance(const Location & locationA, const Location & locationB)
-    {
-        float xDist = locationA.getXCoord() - locationB.getXCoord();
-        float yDist = locationA.getYCoord() - locationB.getYCoord();
-        double xDistSquared = std::pow(xDist, 2.0);
-        double yDistSquared = std::pow(yDist, 2.0);
-        return std::sqrt(xDistSquared + yDistSquared);
-    }
-
     void Location::moveLocationWrapper(Location destination)
     {
         // Create a thread to start the process of moving the vehicle.
@@ -101,5 +92,13 @@ namespace LockFreeDispatch {
         xCoord = 0;
         yCoord = 0;
         inTransit = false;
+    }
+
+    double Location::calculateDistance(const Location &locationA, const Location &locationB) {
+        float xDist = locationA.getXCoord() - locationB.getXCoord();
+        float yDist = locationA.getYCoord() - locationB.getYCoord();
+        double xDistSquared = std::pow(xDist, 2.0);
+        double yDistSquared = std::pow(yDist, 2.0);
+        return std::sqrt(xDistSquared + yDistSquared);
     }
 } // LockFreeDispatch

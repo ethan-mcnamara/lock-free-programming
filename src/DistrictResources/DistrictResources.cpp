@@ -7,6 +7,7 @@
 #include "DistrictResources.h"
 #include "../Vehicle/FireEngine.h"
 #include "../Vehicle/FireLadder.h"
+#include "../Location/Location.h"
 #include "../Vehicle/Vehicle.h"
 #include "../Event/Event.h"
 
@@ -64,16 +65,22 @@ namespace LockFreeDispatch {
 
             if (vehicleType == "Engine")
             {
-                districtVehicles.push_back( std::make_unique<FireEngine>( FireEngine(vehicleId, location,
-                                                                          homeFireStation, maxNumCrew, curNumCrew, maxWaterVolumeLitres,
-                                                                          curWaterVolumeLitres, VehicleStatus::Available, workFactor ) ));
+                districtVehicles.push_back( std::make_unique<FireEngine>(FireEngine(vehicleId, location,
+                                                                                    homeFireStation, maxNumCrew,
+                                                                                    curNumCrew, maxWaterVolumeLitres,
+                                                                                    curWaterVolumeLitres,
+                                                                                    VehicleStatus::Available,
+                                                                                    workFactor)));
                 std::cout << "Adding vehicle #" << vehicleId << " to global list" <<std::endl;
             }
             else if (vehicleType == "Ladder")
             {
-                districtVehicles.push_back( std::make_unique<FireLadder>( FireLadder(vehicleId, location,
-                                                                                     homeFireStation, maxNumCrew, curNumCrew, maxWaterVolumeLitres,
-                                                                                     curWaterVolumeLitres, VehicleStatus::Available, workFactor ) ));
+                districtVehicles.push_back( std::make_unique<FireLadder>(FireLadder(vehicleId, location,
+                                                                                    homeFireStation, maxNumCrew,
+                                                                                    curNumCrew, maxWaterVolumeLitres,
+                                                                                    curWaterVolumeLitres,
+                                                                                    VehicleStatus::Available,
+                                                                                    workFactor)));
                 std::cout << "Adding vehicle #" << vehicleId << " to global list" <<std::endl;
             }
         }
@@ -192,29 +199,34 @@ namespace LockFreeDispatch {
             uint16_t vehicleReqtId = stoi(entry.at(0));
 
             std::string vehicleType = entry.at(1);
-            auto const volWater = stoi(entry.at(2));
+            auto const volWater = stof(entry.at(2));
             auto const numCrew = stoi(entry.at(3));
 
             if (vehicleType == "Engine")
             {
-                vehicleRequirements[vehicleReqtId].push_back( std::make_unique<FireEngine>( FireEngine(numCrew, volWater) ) );
+                vehicleRequirements[vehicleReqtId].push_back(new FireEngine(numCrew, volWater));
                 std::cout << "Adding vehicle with Requirement ID: #" << vehicleReqtId << " to global list" << std::endl;
             }
             else if (vehicleType == "Ladder")
             {
-                vehicleRequirements[vehicleReqtId].push_back( std::make_unique<FireLadder>( FireLadder(numCrew, volWater) ) );
+                vehicleRequirements[vehicleReqtId].push_back(new FireLadder(numCrew, volWater));
                 std::cout << "Adding vehicle with Requirement ID: #" << vehicleReqtId << " to global list" << std::endl;
             }
 
         }
     }
 
-    std::vector<std::unique_ptr<Vehicle>> DistrictResources::getVehicleRequirements(uint32_t eventID) {
+    std::vector<Vehicle *> DistrictResources::getVehicleRequirements(uint32_t eventID) {
         return vehicleRequirements[eventID];
     }
 
-    std::vector<Vehicle> *DistrictResources::getOrderedVehicleList(const Location &eventLocation) {
-        std::vector< std::unique_ptr < Vehicle > > orderedList = new std::vector<Vehicle> (districtVehicles);
+    std::vector<Vehicle *> DistrictResources::getOrderedVehicleList(const Location &eventLocation) {
+        // Copy pointers to districtVehicles
+        std::vector<Vehicle*> orderedList;
+        for (const auto & vehicle : districtVehicles)
+        {
+            orderedList.push_back(vehicle.get());
+        }
 
         // Classic bubble sort, chosen for ease of implementation since there are always <64 vehicles
         // it will always run in O(1) time
@@ -222,19 +234,17 @@ namespace LockFreeDispatch {
         while (stillSorting)
         {
             stillSorting = false;
-            for (size_t i = 0; i < orderedList->size()-1; i++)
+            for (size_t i = 0; i < orderedList.size()-1; i++)
             {
-                if (Location::calculateDistance((*orderedList)[i].getVehicleLocation(), eventLocation) >
-                Location::calculateDistance((*orderedList)[i + 1].getVehicleLocation(), eventLocation) ){
-                    Vehicle temp = (*orderedList)[i];
-                    (*orderedList)[i] = (*orderedList)[i + 1];
-                    (*orderedList)[i + 1] = temp;
+                if (Location::calculateDistance((orderedList)[i]->getVehicleLocation(), eventLocation) >
+                Location::calculateDistance((orderedList)[i + 1]->getVehicleLocation(), eventLocation) ){
+                    auto temp = orderedList[i];
+                    orderedList[i] = orderedList[i + 1];
+                    orderedList[i + 1] = temp;
                 }
-                std::cout << "outside if statement" << std::endl;
             }
         }
         return orderedList;
-
     }
 
 } // LockFreeDispatch

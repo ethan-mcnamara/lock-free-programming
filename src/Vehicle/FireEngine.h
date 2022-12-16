@@ -2,6 +2,7 @@
 #define CMAKE_LOCK_FREE_PROGRAMMING_FIREENGINE_H
 
 #include "Vehicle.h"
+class Vehicle;
 
 namespace LockFreeDispatch {
 
@@ -9,8 +10,8 @@ namespace LockFreeDispatch {
         private:
 
         public:
-            FireEngine(uint32_t id, Location location, FireStation station, uint16_t maxCrew, uint16_t curCrew,
-                       float maxWater, float curWater, VehicleStatus status, float wFactor);
+            FireEngine(uint32_t id1, Location location1, FireStation station1, uint16_t maxCrew1, uint16_t curCrew1,
+                       float maxWater1, float curWater1, VehicleStatus status1, float wFactor1);
             FireEngine(uint16_t numCrew, float volWater);
 
     };

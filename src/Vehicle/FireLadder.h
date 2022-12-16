@@ -9,10 +9,10 @@ namespace LockFreeDispatch {
         private:
 
         public:
-        FireLadder(uint32_t id, Location location, FireStation station, uint16_t maxCrew, uint16_t curCrew,
-                   float maxWater, float curWater, VehicleStatus status, float wFactor);
+        FireLadder(uint32_t id1, Location location1, FireStation station1, uint16_t maxCrew1, uint16_t curCrew1,
+                   float maxWater1, float curWater1, VehicleStatus status1, float wFactor1);
 
-        FireLadder(uint16_t numCrew, float volWater);
+        FireLadder(uint16_t numCrew1, float volWater1);
 
     };
 
