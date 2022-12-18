@@ -106,7 +106,7 @@ namespace LockFreeDispatch {
 
         bool header = true;
 
-        for (std::vector<std::string> entry : stations)
+        for (const std::vector<std::string> & entry : stations)
         {
             if (header)
             {
