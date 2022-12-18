@@ -19,9 +19,9 @@ namespace LockFreeDispatch
 
         std::vector<Vehicle*> meetingRequirements;
 
-        for (const auto & vehicle : orderedVehicles)
+        for (const auto vehicle : orderedVehicles)
         {
-            for (const auto & reqt : vehicleReqts)
+            for (const auto reqt : vehicleReqts)
             {
                 // TODO - should confirm the Engine/Ladder type
                 if (vehicle->getCurNumCrew() >= reqt->getCurNumCrew()
@@ -41,7 +41,7 @@ namespace LockFreeDispatch
         while (true)
         {
             std::vector<Vehicle*> selectedVehicles;
-            uint8_t numVehiclesRequired = vehicleReqts.size();
+            size_t numVehiclesRequired = vehicleReqts.size();
             std::vector<Vehicle*> listSubset = vehiclesMeetingRequirements(vehicleReqts, orderedVehicles);
             float avgWorkFactor = calculateAverageWorkFactor(listSubset);
 
@@ -116,8 +116,11 @@ namespace LockFreeDispatch
 
         uint64_t expected = unmodifiedBitArray.getGlobalBitArray();
         uint64_t desired = modifiedBitArray.getGlobalBitArray();
+
+        // If the below function returns true, this is the program's linearization point
         if(bitArray->globalBitArray.compare_exchange_weak(expected, desired))
         {
+            // Post-linearization point cleanup:
             for (const auto & vehicle : vehicleList)
             {
                 vehicle->setCurVehicleStatus(VehicleStatus::Responding);
