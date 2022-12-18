@@ -2,7 +2,8 @@
 #include <atomic>
 #include "BitArray.h"
 
-namespace LockFreeDispatch {
+namespace LockFreeDispatch
+{
 
     uint64_t BitArray::modifyBitArray(int vehicleID, bool writeTrue)
     {
@@ -32,7 +33,8 @@ namespace LockFreeDispatch {
         globalBitArray = newBitArray;
     }
 
-    uint64_t BitArray::getGlobalBitArray() {
+    uint64_t BitArray::getGlobalBitArray()
+    {
         return globalBitArray;
     }
 

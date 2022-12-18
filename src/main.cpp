@@ -10,11 +10,13 @@ EventFactory *eventFactory = new EventFactory();
 Time *programClock = new Time();
 BitArray *globalBitArray = new BitArray();
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 
     #pragma region commandLineArguments
     // Process command-line arguments
-    if (argc != 5) {
+    if (argc != 5)
+    {
         exit(-1);
     }
     std::string vehicleListFileName = argv[1];

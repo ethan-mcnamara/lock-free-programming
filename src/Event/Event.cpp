@@ -1,6 +1,7 @@
 #include "Event.h"
 
-namespace LockFreeDispatch {
+namespace LockFreeDispatch
+{
 
     // Get eventID
     uint32_t Event::getEventID() const

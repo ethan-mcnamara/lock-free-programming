@@ -5,7 +5,8 @@
 #include <atomic>
 #include <iostream>
 
-namespace LockFreeDispatch {
+namespace LockFreeDispatch
+{
 
     // Get xCoord
     float Location::getXCoord() const
@@ -70,7 +71,7 @@ namespace LockFreeDispatch {
         inTransit = false;
     }
 
-    bool Location::getInTransit()
+    bool Location::getInTransit() const
     {
         return inTransit;
     }
@@ -94,11 +95,13 @@ namespace LockFreeDispatch {
         inTransit = false;
     }
 
-    double Location::calculateDistance(const Location &locationA, const Location &locationB) {
+    double Location::calculateDistance(const Location &locationA, const Location &locationB)
+    {
         float xDist = locationA.getXCoord() - locationB.getXCoord();
         float yDist = locationA.getYCoord() - locationB.getYCoord();
         double xDistSquared = std::pow(xDist, 2.0);
         double yDistSquared = std::pow(yDist, 2.0);
         return std::sqrt(xDistSquared + yDistSquared);
     }
+
 } // LockFreeDispatch

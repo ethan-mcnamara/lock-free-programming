@@ -13,7 +13,7 @@ namespace LockFreeDispatch {
 
             std::vector<Vehicle *> vehiclesMeetingRequirements(
                     std::vector<Vehicle *> vehicleReqts, std::vector<Vehicle *> orderedVehicles);
-            float calculateAverageWorkFactor(std::vector<Vehicle *> vehicleList);
+            float calculateAverageWorkFactor(const std::vector<Vehicle *>& vehicleList);
 
         public:
             std::vector<Event> pendingQueue;
@@ -21,10 +21,10 @@ namespace LockFreeDispatch {
             std::vector<Event> activeQueue;
 
             std::vector<Vehicle *>
-            selectVehicles(std::vector<Vehicle *> vehicleReqts, std::vector<Vehicle *> orderedVehicles,
+            selectVehicles(const std::vector<Vehicle *>& vehicleReqts, const std::vector<Vehicle *>& orderedVehicles,
                            BitArray *bitArray);
 
-            bool modifyVehicleStatus(std::vector<Vehicle *> vehicleList, BitArray *bitArray);
+            bool modifyVehicleStatus(const std::vector<Vehicle *>& vehicleList, BitArray *bitArray);
 
             void populateActiveQueue(Time *programClock, DistrictResources *districtResources, BitArray *bitArray);
 

@@ -1,6 +1,7 @@
 #include "FireStation.h"
 
-namespace LockFreeDispatch {
+namespace LockFreeDispatch
+{
 
     // Get fireStationID
     uint32_t FireStation::getFireStationID() const
@@ -65,4 +66,5 @@ namespace LockFreeDispatch {
         maxNumCrew = 0;
         curNumCrew = 0;
     }
+
 } // LockFreeDispatch

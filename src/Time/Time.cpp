@@ -3,7 +3,8 @@
 #include "Time.h"
 #include <iostream>
 
-namespace LockFreeDispatch {
+namespace LockFreeDispatch
+{
 
     // Get millisecond
     uint8_t Time::getMillisecond() const
@@ -76,7 +77,7 @@ namespace LockFreeDispatch {
     }
 
     // isEqual
-    bool Time::isEqual(Time otherTime)
+    bool Time::isEqual(Time otherTime) const
     {
         return  (day == otherTime.day) &&
                 (hour == otherTime.hour) &&
@@ -137,7 +138,8 @@ namespace LockFreeDispatch {
         printf("%d:%02d:%02d:%02d:%02d", day, hour, minute, second, millisecond);
     }
 
-    Time Time::stringToTime(std::string time) {
+    Time Time::stringToTime(const std::string& time)
+    {
         Time newTime = Time();
 
         // Regex expression for pattern to be searched
@@ -185,4 +187,5 @@ namespace LockFreeDispatch {
     }
 
     Time::Time() = default;
+
 } // LockFreeDispatch

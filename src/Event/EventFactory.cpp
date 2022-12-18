@@ -9,12 +9,13 @@
 #include <cmath>
 #include <thread>
 
-namespace LockFreeDispatch {
-
+namespace LockFreeDispatch
+{
 
     std::vector<Vehicle *> EventFactory::vehiclesMeetingRequirements(
             std::vector<Vehicle *> vehicleReqts,
-            std::vector<Vehicle *> orderedVehicles) {
+            std::vector<Vehicle *> orderedVehicles)
+            {
 
         std::vector<Vehicle*> meetingRequirements;
 
@@ -34,8 +35,9 @@ namespace LockFreeDispatch {
     }
 
     std::vector<Vehicle *> EventFactory::selectVehicles(
-            std::vector<Vehicle *> vehicleReqts, std::vector<Vehicle *> orderedVehicles,
-            BitArray *bitArray) {
+            const std::vector<Vehicle *>& vehicleReqts, const std::vector<Vehicle *>& orderedVehicles,
+            BitArray *bitArray)
+            {
         while (true)
         {
             std::vector<Vehicle*> selectedVehicles;
@@ -70,9 +72,12 @@ namespace LockFreeDispatch {
                     }
                 }
             }
-            for (const auto & vehicle : orderedVehicles) {
+
+            for (const auto & vehicle : orderedVehicles)
+            {
                 if (vehicle->getCurVehicleStatus() == VehicleStatus::Available
-                    || vehicle->getCurVehicleStatus() == VehicleStatus::Returning) {
+                    || vehicle->getCurVehicleStatus() == VehicleStatus::Returning)
+                {
                     selectedVehicles.push_back(vehicle);
                     --numVehiclesRequired;
                 }
@@ -89,7 +94,8 @@ namespace LockFreeDispatch {
         }
     }
 
-    bool EventFactory::modifyVehicleStatus(std::vector<Vehicle *> vehicleList, BitArray *bitArray) {
+    bool EventFactory::modifyVehicleStatus(const std::vector<Vehicle *>& vehicleList, BitArray *bitArray)
+    {
         BitArray unmodifiedBitArray;
         unmodifiedBitArray.setGlobalBitArray(bitArray->getGlobalBitArray());
         BitArray modifiedBitArray;
@@ -121,7 +127,8 @@ namespace LockFreeDispatch {
         return false;
     }
 
-    float EventFactory::calculateAverageWorkFactor(std::vector<Vehicle *> vehicleList) {
+    float EventFactory::calculateAverageWorkFactor(const std::vector<Vehicle *>& vehicleList)
+    {
         size_t listSize = vehicleList.size();
         float workFactorSum = 0;
         for (auto vehicle : vehicleList)
@@ -217,6 +224,5 @@ namespace LockFreeDispatch {
                 activeQueue.erase(activeQueue.begin() + i);
         }
     }
-
 
 } // LockFreeDispatch

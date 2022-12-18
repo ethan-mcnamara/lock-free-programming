@@ -39,7 +39,7 @@ namespace LockFreeDispatch {
 
         void setTime(uint8_t newDay, uint8_t newHour, uint8_t newMinute, uint8_t newSecond, uint8_t newMillisecond);
 
-        bool isEqual(Time otherTime);
+        bool isEqual(Time otherTime) const;
 
         bool isBefore(Time otherTime) const;
 
@@ -47,7 +47,7 @@ namespace LockFreeDispatch {
 
         void printTime() const;
 
-        static Time stringToTime(std::string time);
+        static Time stringToTime(const std::string& time);
 
         void incrementTimeOneMillisecond();
     };

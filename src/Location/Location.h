@@ -30,7 +30,7 @@ namespace LockFreeDispatch {
 
             void moveLocationWrapper(Location destination);
 
-            bool getInTransit();
+            bool getInTransit() const;
 
             void setInTransitFalse();
     };

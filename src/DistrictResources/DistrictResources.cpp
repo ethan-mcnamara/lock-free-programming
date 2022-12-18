@@ -7,13 +7,12 @@
 #include "DistrictResources.h"
 #include "../Vehicle/FireEngine.h"
 #include "../Vehicle/FireLadder.h"
-#include "../Location/Location.h"
-#include "../Vehicle/Vehicle.h"
-#include "../Event/Event.h"
 
-namespace LockFreeDispatch {
+namespace LockFreeDispatch
+{
 
-    FireStation DistrictResources::findFireStation(uint32_t fireStationID) {
+    FireStation DistrictResources::findFireStation(uint32_t fireStationID)
+    {
         // TODO - Evaluate whether std::find_if could improve performance here
         for (const auto & station : districtFireStations)
         {
@@ -228,11 +227,13 @@ namespace LockFreeDispatch {
         }
     }
 
-    std::vector<Vehicle *> DistrictResources::getVehicleRequirements(uint32_t eventID) {
+    std::vector<Vehicle *> DistrictResources::getVehicleRequirements(uint32_t eventID)
+    {
         return vehicleRequirements[eventID];
     }
 
-    std::vector<Vehicle *> DistrictResources::getOrderedVehicleList(const Location &eventLocation) {
+    std::vector<Vehicle *> DistrictResources::getOrderedVehicleList(const Location &eventLocation)
+    {
         // Copy pointers to districtVehicles
         std::vector<Vehicle*> orderedList;
         for (const auto & vehicle : districtVehicles)
