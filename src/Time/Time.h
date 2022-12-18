@@ -8,11 +8,11 @@ namespace LockFreeDispatch {
 
     class Time {
     private:
-        uint8_t millisecond;
-        uint8_t second;
-        uint8_t minute;
-        uint8_t hour;
         uint16_t day;
+        uint8_t hour;
+        uint8_t minute;
+        uint8_t second;
+        uint8_t millisecond;
 
     public:
         Time();

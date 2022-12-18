@@ -11,6 +11,7 @@ namespace LockFreeDispatch {
             float xCoord;
             float yCoord;
             bool inTransit;
+
             void moveLocation(Location destination);
 
         public:

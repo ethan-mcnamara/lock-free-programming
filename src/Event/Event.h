@@ -13,11 +13,12 @@ namespace LockFreeDispatch {
 
     class Event {
     private:
-        uint32_t eventID;
-        Time startTime;
-        uint64_t durationSeconds;
         bool dispatched;
+        uint64_t durationSeconds;
+        uint32_t eventID;
         Location eventLocation;
+        Time startTime;
+
     public:
         Event();
 

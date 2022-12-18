@@ -11,8 +11,8 @@ namespace LockFreeDispatch {
 
     class DistrictResources {
         private:
-            std::vector< std::unique_ptr< Vehicle > > districtVehicles;
             std::vector< std::unique_ptr < FireStation > > districtFireStations;
+            std::vector< std::unique_ptr< Vehicle > > districtVehicles;
             std::unordered_map<uint32_t, std::vector<Vehicle*> > vehicleRequirements;
 
         public:

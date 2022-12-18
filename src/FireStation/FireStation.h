@@ -7,10 +7,10 @@ namespace LockFreeDispatch {
 
     class FireStation {
         private:
-        uint32_t fireStationID;
-            Location fireStationLocation;
-            uint16_t maxNumCrew;
+            uint32_t fireStationID;
             uint16_t curNumCrew;
+            uint16_t maxNumCrew;
+            Location fireStationLocation;
 
         public:
             FireStation(uint32_t id, Location location, uint16_t maxCrew, uint16_t curCrew);
