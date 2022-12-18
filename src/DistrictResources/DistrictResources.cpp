@@ -127,7 +127,7 @@ namespace LockFreeDispatch {
         }
     }
 
-    void DistrictResources::processEventSampleData(const std::string &fileName, std::vector<Event> *pendingQueue)
+    void DistrictResources::processEventSampleData(const std::string &fileName, std::vector<Event> &pendingQueue)
     {
         std::vector<std::vector<std::string>> events;
         std::vector<std::string> row;
@@ -162,7 +162,7 @@ namespace LockFreeDispatch {
                 auto const durationSeconds = stoi(entry.at(2));
                 auto const location = Location(stof(entry.at(4)), stof(entry.at(5)));
                 auto const vehicleRequirementsId = stoi(entry.at(6));
-                pendingQueue->push_back(Event(eventID, startTime, durationSeconds, location, vehicleRequirementsId));
+                pendingQueue.push_back(Event(eventID, startTime, durationSeconds, location, vehicleRequirementsId));
 //
                 std::cout << "Adding Event #" << entry.at(0) << " to pending queue" << std::endl;
             }

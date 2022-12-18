@@ -19,7 +19,7 @@ namespace LockFreeDispatch {
             FireStation findFireStation(uint32_t fireStationID);
             void processVehicleSampleData(const std::string& fileName);
             void processFireStationSampleData(const std::string& fileName);
-            void processEventSampleData(const std::string &fileName, std::vector<Event> *pendingQueue);
+            void processEventSampleData(const std::string &fileName, std::vector<Event> &pendingQueue);
             void processVehicleRequirementsSampleData(const std::string &fileName);
             std::vector<Vehicle *> getVehicleRequirements(uint32_t eventID);
             std::vector<Vehicle *> getOrderedVehicleList(const Location &eventLocation);
