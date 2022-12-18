@@ -53,7 +53,7 @@ namespace LockFreeDispatch
 
     Event::Event()
             : eventID( -1 ), startTime( Time() ), durationSeconds( 0 ),
-            dispatched( false ), vehicleRequirementId( -1 ) {}
+            dispatched( false ) {}
 
     // Get eventLocation
     Location Event::getLocation()
@@ -67,19 +67,12 @@ namespace LockFreeDispatch
         eventLocation = newLocation;
     }
 
-    // Add new vehicleRequirement
-    void Event::addVehicleRequirementId(uint16_t newVehicleRequirementId)
-    {
-        vehicleRequirementId = newVehicleRequirementId;
-    }
-
-    Event::Event(uint32_t id, Time start, uint64_t duration, Location location, uint16_t requirementsId)
+    Event::Event(uint32_t id, Time start, uint64_t duration, Location location, uint32_t requirementsId)
                  {
         eventID = id;
         startTime = start;
         durationSeconds = duration;
         eventLocation = location;
-        vehicleRequirementId = requirementsId;
         dispatched = false;
     }
 } // LockFreeDispatch

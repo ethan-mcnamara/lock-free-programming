@@ -203,7 +203,7 @@ namespace LockFreeDispatch
                 header = false;
                 continue;
             }
-            uint16_t vehicleReqtId = stoi(entry.at(0));
+            uint32_t vehicleReqtId = stoi(entry.at(0));
 
             std::string vehicleType = entry.at(1);
             auto const volWater = stof(entry.at(2));
