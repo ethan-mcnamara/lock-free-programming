@@ -147,7 +147,9 @@ namespace LockFreeDispatch {
             // Remove the event from the pending queue
             pendingQueue.erase(pendingQueue.begin());
 
+#ifndef NDEBUG
             std::cout << "Starting dispatch process for Event #" << curEvent->getEventID() << std::endl;
+#endif
 
             // Create a thread to handle this event
             std::thread curEvent_thread([this, districtResources, curEvent, bitArray]()
@@ -161,9 +163,7 @@ namespace LockFreeDispatch {
     void EventFactory::processEvent(Event *curEvent, DistrictResources *districtResources, BitArray *bitArray)
     {
         std::vector<Vehicle*> eventRequirements = districtResources->getVehicleRequirements(curEvent->getEventID());
-        std::cout << "Before ordered list" << std::endl;
         std::vector<Vehicle*> orderedList = districtResources->getOrderedVehicleList(curEvent->getLocation());
-        std::cout << "After ordered list" << std::endl;
         std::vector<Vehicle*> dispatchedVehicles = selectVehicles(eventRequirements, orderedList, bitArray);
 
         for (const auto & vehicle : dispatchedVehicles)
@@ -177,7 +177,9 @@ namespace LockFreeDispatch {
         }
 
         removeEventActiveQueue(curEvent->getEventID());
+#ifndef NDEBUG
         std::cout << "Dispatched event #" << curEvent->getEventID() << std::endl;
+#endif
     }
 
     void EventFactory::processVehicle(Vehicle *curVehicle, Event *curEvent, BitArray *bitArray)

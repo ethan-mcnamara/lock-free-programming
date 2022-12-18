@@ -71,7 +71,9 @@ namespace LockFreeDispatch {
                                                                                     curWaterVolumeLitres,
                                                                                     VehicleStatus::Available,
                                                                                     workFactor)));
+#ifndef NDEBUG
                 std::cout << "Adding vehicle #" << vehicleId << " to global list" <<std::endl;
+#endif
             }
             else if (vehicleType == "Ladder")
             {
@@ -81,7 +83,9 @@ namespace LockFreeDispatch {
                                                                                     curWaterVolumeLitres,
                                                                                     VehicleStatus::Available,
                                                                                     workFactor)));
+#ifndef NDEBUG
                 std::cout << "Adding vehicle #" << vehicleId << " to global list" <<std::endl;
+#endif
             }
         }
     }
@@ -123,7 +127,9 @@ namespace LockFreeDispatch {
 
             districtFireStations.push_back( std::make_unique<FireStation>( FireStation(stationId, location, maxCrew, curCrew) ));
 
+#ifndef NDEBUG
             std::cout << "Adding Fire Station #" << stationId << " to global list" << std::endl;
+#endif
         }
     }
 
@@ -163,8 +169,10 @@ namespace LockFreeDispatch {
                 auto const location = Location(stof(entry.at(4)), stof(entry.at(5)));
                 auto const vehicleRequirementsId = stoi(entry.at(6));
                 pendingQueue.push_back(Event(eventID, startTime, durationSeconds, location, vehicleRequirementsId));
-//
+
+#ifndef NDEBUG
                 std::cout << "Adding Event #" << entry.at(0) << " to pending queue" << std::endl;
+#endif
             }
         }
     }
@@ -205,12 +213,16 @@ namespace LockFreeDispatch {
             if (vehicleType == "Engine")
             {
                 vehicleRequirements[vehicleReqtId].push_back(new FireEngine(numCrew, volWater));
+#ifndef NDEBUG
                 std::cout << "Adding vehicle with Requirement ID: #" << vehicleReqtId << " to global list" << std::endl;
+#endif
             }
             else if (vehicleType == "Ladder")
             {
                 vehicleRequirements[vehicleReqtId].push_back(new FireLadder(numCrew, volWater));
+#ifndef NDEBUG
                 std::cout << "Adding vehicle with Requirement ID: #" << vehicleReqtId << " to global list" << std::endl;
+#endif
             }
 
         }
