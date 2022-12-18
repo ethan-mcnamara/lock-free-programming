@@ -227,9 +227,9 @@ namespace LockFreeDispatch
         }
     }
 
-    std::vector<Vehicle *> DistrictResources::getVehicleRequirements(uint32_t eventID)
+    std::vector<Vehicle *> DistrictResources::getVehicleRequirements(uint32_t eventID) const
     {
-        return vehicleRequirements[eventID];
+        return vehicleRequirements.at(eventID);
     }
 
     std::vector<Vehicle *> DistrictResources::getOrderedVehicleList(const Location &eventLocation)
