@@ -52,13 +52,8 @@ namespace LockFreeDispatch
     }
 
     Event::Event()
-    {
-        eventID = -1;
-        startTime = Time();
-        durationSeconds = 0;
-        dispatched = false;
-        vehicleRequirementId = -1;
-    }
+            : eventID( -1 ), startTime( Time() ), durationSeconds( 0 ),
+            dispatched( false ), vehicleRequirementId( -1 ) {}
 
     // Get eventLocation
     Location Event::getLocation()
