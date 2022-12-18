@@ -211,14 +211,14 @@ namespace LockFreeDispatch
 
             if (vehicleType == "Engine")
             {
-                vehicleRequirements[vehicleReqtId].push_back(new FireEngine(numCrew, volWater));
+                vehicleRequirements[vehicleReqtId].push_back(std::make_unique<Vehicle> (FireEngine(numCrew, volWater)));
 #ifndef NDEBUG
                 std::cout << "Adding vehicle with Requirement ID: #" << vehicleReqtId << " to global list" << std::endl;
 #endif
             }
             else if (vehicleType == "Ladder")
             {
-                vehicleRequirements[vehicleReqtId].push_back(new FireLadder(numCrew, volWater));
+                vehicleRequirements[vehicleReqtId].push_back(std::make_unique<Vehicle> (FireLadder(numCrew, volWater)));
 #ifndef NDEBUG
                 std::cout << "Adding vehicle with Requirement ID: #" << vehicleReqtId << " to global list" << std::endl;
 #endif
@@ -229,7 +229,14 @@ namespace LockFreeDispatch
 
     std::vector<Vehicle *> DistrictResources::getVehicleRequirements(uint32_t eventID) const
     {
-        return vehicleRequirements.at(eventID);
+        std::vector<Vehicle *> curEventVehicleRequirements;
+
+        for (const auto & reqt : vehicleRequirements.at(eventID))
+        {
+            curEventVehicleRequirements.push_back(reqt.get());
+        }
+
+        return curEventVehicleRequirements;
     }
 
     std::vector<Vehicle *> DistrictResources::getOrderedVehicleList(const Location &eventLocation)

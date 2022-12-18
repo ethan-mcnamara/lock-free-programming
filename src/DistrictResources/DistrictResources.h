@@ -13,7 +13,7 @@ namespace LockFreeDispatch {
         private:
             std::vector< std::unique_ptr < FireStation > > districtFireStations;
             std::vector< std::unique_ptr< Vehicle > > districtVehicles;
-            std::unordered_map<uint32_t, std::vector<Vehicle*> > vehicleRequirements;
+            std::unordered_map<uint32_t, std::vector<std::unique_ptr< Vehicle> > > vehicleRequirements;
 
         public:
             FireStation findFireStation(uint32_t fireStationID);
