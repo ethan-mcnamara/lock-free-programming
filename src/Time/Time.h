@@ -2,18 +2,20 @@
 #define LOCK_FREE_PROGRAMMING_TIME_H
 
 #include <cstdint>
+#include <string>
 
 namespace LockFreeDispatch {
 
     class Time {
     private:
-        uint8_t millisecond;
-        uint8_t second;
-        uint8_t minute;
-        uint8_t hour;
         uint16_t day;
+        uint8_t hour;
+        uint8_t minute;
+        uint8_t second;
+        uint8_t millisecond;
 
     public:
+        Time();
 
         uint8_t getMillisecond() const;
 
@@ -37,13 +39,17 @@ namespace LockFreeDispatch {
 
         void setTime(uint8_t newDay, uint8_t newHour, uint8_t newMinute, uint8_t newSecond, uint8_t newMillisecond);
 
-        bool isEqual(Time otherTime);
+        bool isEqual(Time otherTime) const;
 
         bool isBefore(Time otherTime) const;
 
         bool isAfter(Time otherTime) const;
 
         void printTime() const;
+
+        static Time stringToTime(const std::string& time);
+
+        void incrementTimeOneMillisecond();
     };
 
 } // LockFreeDispatch

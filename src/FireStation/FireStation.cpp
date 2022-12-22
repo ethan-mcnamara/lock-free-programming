@@ -1,6 +1,7 @@
 #include "FireStation.h"
 
-namespace LockFreeDispatch {
+namespace LockFreeDispatch
+{
 
     // Get fireStationID
     uint32_t FireStation::getFireStationID() const
@@ -38,18 +39,6 @@ namespace LockFreeDispatch {
         maxNumCrew = crewNum;
     }
 
-    // Get maxNumVehicles
-    uint8_t FireStation::getMaxNumVehicles() const
-    {
-        return maxNumVehicles;
-    }
-
-    // Set maxNumVehicles
-    void FireStation::setMaxNumVehicles(uint8_t vehicleNum)
-    {
-        maxNumVehicles = vehicleNum;
-    }
-
     // Get curNumCrew
     uint16_t FireStation::getCurNumCrew() const
     {
@@ -62,15 +51,20 @@ namespace LockFreeDispatch {
         curNumCrew = newNumCrew;
     }
 
-    // Get curNumVehicles
-    uint8_t FireStation::getCurNumVehicles() const
+    FireStation::FireStation(uint32_t id, Location location, uint16_t maxCrew, uint16_t curCrew)
     {
-        return curNumVehicles;
+        fireStationID = id;
+        fireStationLocation = location;
+        maxNumCrew = maxCrew;
+        curNumCrew = curCrew;
     }
 
-    // Set curNumvehicles
-    void FireStation::setCurNumVehicles(uint8_t newNumVehicles)
+    FireStation::FireStation()
     {
-        curNumVehicles = newNumVehicles;
+        fireStationID = -1;
+        fireStationLocation = Location();
+        maxNumCrew = 0;
+        curNumCrew = 0;
     }
+
 } // LockFreeDispatch

@@ -1,7 +1,10 @@
 #include <string>
+#include <regex>
 #include "Time.h"
+#include <iostream>
 
-namespace LockFreeDispatch {
+namespace LockFreeDispatch
+{
 
     // Get millisecond
     uint8_t Time::getMillisecond() const
@@ -74,7 +77,7 @@ namespace LockFreeDispatch {
     }
 
     // isEqual
-    bool Time::isEqual(Time otherTime)
+    bool Time::isEqual(Time otherTime) const
     {
         return  (day == otherTime.day) &&
                 (hour == otherTime.hour) &&
@@ -134,4 +137,55 @@ namespace LockFreeDispatch {
     {
         printf("%d:%02d:%02d:%02d:%02d", day, hour, minute, second, millisecond);
     }
+
+    Time Time::stringToTime(const std::string& time)
+    {
+        Time newTime = Time();
+
+        // Regex expression for pattern to be searched
+        std::regex regexp(R"((\d)+:(\d)+:(\d)+:(\d)+:(\d)+)");
+
+        // Flag type for determining the matching behavior (in this case on string objects)
+        std::smatch matches;
+
+        // Regex_search that searches pattern regexp in the string
+        regex_search(time, matches, regexp);
+
+        // Set Time properties
+        newTime.setDay(stoi(matches[0]));
+        newTime.setHour(stoi(matches[1]));
+        newTime.setMinute(stoi(matches[2]));
+        newTime.setSecond(stoi(matches[3]));
+        newTime.setMillisecond(stoi(matches[4]));
+
+        return newTime;
+    }
+
+    void Time::incrementTimeOneMillisecond()
+    {
+        ++millisecond;
+        if (millisecond > 59)
+        {
+            millisecond = 0;
+            ++second;
+        }
+        if (second > 59)
+        {
+            second = 0;
+            ++minute;
+        }
+        if (minute > 59)
+        {
+            minute = 0;
+            ++hour;
+        }
+        if (hour > 23)
+        {
+            hour = 0;
+            ++day;
+        }
+    }
+
+    Time::Time() = default;
+
 } // LockFreeDispatch

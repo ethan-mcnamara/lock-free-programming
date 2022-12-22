@@ -8,13 +8,15 @@ namespace LockFreeDispatch {
     class FireStation {
         private:
             uint32_t fireStationID;
-            Location fireStationLocation;
-            uint16_t maxNumCrew;
-            uint8_t maxNumVehicles;
             uint16_t curNumCrew;
-            uint8_t curNumVehicles;
+            uint16_t maxNumCrew;
+            Location fireStationLocation;
 
         public:
+            FireStation(uint32_t id, Location location, uint16_t maxCrew, uint16_t curCrew);
+
+            FireStation();
+
             uint32_t getFireStationID() const;
 
             void setFireStationID(uint32_t id);
@@ -27,17 +29,9 @@ namespace LockFreeDispatch {
 
             void setMaxNumCrew(uint16_t crewNum);
 
-            uint8_t getMaxNumVehicles() const;
+            uint16_t getCurNumCrew() const;
 
-            void setMaxNumVehicles(uint8_t vehicleNum);
-
-        uint16_t getCurNumCrew() const;
-
-        void setCurNumCrew(uint16_t newNumCrew);
-
-        uint8_t getCurNumVehicles() const;
-
-        void setCurNumVehicles(uint8_t newNumVehicles);
+            void setCurNumCrew(uint16_t newNumCrew);
     };
 
 } // LockFreeDispatch

@@ -1,6 +1,7 @@
 #include "Vehicle.h"
 
-namespace LockFreeDispatch {
+namespace LockFreeDispatch
+{
 
     // Get vehicleID
     uint32_t Vehicle::getVehicleID() const
@@ -97,4 +98,42 @@ namespace LockFreeDispatch {
     {
         curVehicleStatus = newStatus;
     }
+
+    float Vehicle::getWorkFactor() const
+    {
+        return workFactor;
+    }
+
+    void Vehicle::setWorkFactor(float newWorkFactor)
+    {
+        workFactor = newWorkFactor;
+    }
+
+    Vehicle::Vehicle(uint32_t id, Location location, FireStation station, uint16_t maxCrew, uint16_t curCrew,
+                     float maxWater, float curWater, VehicleStatus status, float wFactor)
+                     {
+        vehicleID = id;
+        vehicleLocation = location;
+        homeFireStation = station;
+        maxNumCrew = maxCrew;
+        curNumCrew = curCrew;
+        maxWaterVolumeLitres = maxWater;
+        curWaterVolumeLitres = curWater;
+        curVehicleStatus = status;
+        workFactor = wFactor;
+    }
+
+    Vehicle::Vehicle(uint16_t numCrew, float volWater)
+    {
+        vehicleID = -1;
+        vehicleLocation = Location();
+        homeFireStation = FireStation();
+        maxNumCrew = numCrew;
+        curNumCrew = numCrew;
+        maxWaterVolumeLitres = volWater;
+        curWaterVolumeLitres = volWater;
+        curVehicleStatus = VehicleStatus::Available;
+        workFactor = 0;
+    }
+
 } // LockFreeDispatch

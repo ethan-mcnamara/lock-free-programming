@@ -2,23 +2,38 @@
 #define CMAKE_LOCK_FREE_PROGRAMMING_LOCATION_H
 
 #include <cstdint>
+#include <atomic>
 
 namespace LockFreeDispatch {
 
     class Location {
         private:
-            int64_t xCoord;
-            int64_t yCoord;
+            float xCoord;
+            float yCoord;
+            bool inTransit;
+
+            void moveLocation(Location destination);
 
         public:
+            Location(float x, float y);
 
-        int64_t getXCoord() const;
+            Location();
 
-        void setXCoord(int64_t coord);
+            float getXCoord() const;
 
-        int64_t getYCoord() const;
+            void setXCoord(float coord);
 
-        void setYCoord(int64_t coord);
+            float getYCoord() const;
+
+            void setYCoord(float coord);
+
+            static double calculateDistance(const Location & locationA, const Location & locationB);
+
+            void moveLocationWrapper(Location destination);
+
+            bool getInTransit() const;
+
+            void setInTransitFalse();
     };
 
 } // LockFreeDispatch

@@ -9,15 +9,21 @@ namespace LockFreeDispatch {
 
     class Vehicle {
     private:
-        uint32_t vehicleID;
-        Location vehicleLocation;
-        FireStation homeFireStation;
-        uint16_t maxNumCrew;
         uint16_t curNumCrew;
+        uint16_t maxNumCrew;
         float curWaterVolumeLitres;
         float maxWaterVolumeLitres;
         VehicleStatus curVehicleStatus;
+        uint32_t vehicleID;
+        float workFactor;
+        FireStation homeFireStation;
+        Location vehicleLocation;
     public:
+        Vehicle(uint32_t id, Location location, FireStation station, uint16_t maxCrew, uint16_t curCrew,
+                         float maxWater, float curWater, VehicleStatus status, float wFactor);
+
+        Vehicle(uint16_t numCrew, float volWater);
+
         uint32_t getVehicleID() const;
 
         void setVehicleID(uint32_t id);
@@ -49,6 +55,10 @@ namespace LockFreeDispatch {
         VehicleStatus getCurVehicleStatus();
 
         void setCurVehicleStatus(VehicleStatus newStatus);
+
+        float getWorkFactor() const;
+
+        void setWorkFactor(float newWorkFactor);
     };
 
 } // LockFreeDispatch

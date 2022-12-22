@@ -1,6 +1,7 @@
 #include "Event.h"
 
-namespace LockFreeDispatch {
+namespace LockFreeDispatch
+{
 
     // Get eventID
     uint32_t Event::getEventID() const
@@ -48,5 +49,30 @@ namespace LockFreeDispatch {
     void Event::setDispatched(bool dispatchStatus)
     {
         dispatched = dispatchStatus;
+    }
+
+    Event::Event()
+            : eventID( -1 ), startTime( Time() ), durationSeconds( 0 ),
+            dispatched( false ) {}
+
+    // Get eventLocation
+    Location Event::getLocation()
+    {
+        return eventLocation;
+    }
+
+    // Set eventLocation
+    void Event::setLocation(Location newLocation)
+    {
+        eventLocation = newLocation;
+    }
+
+    Event::Event(uint32_t id, Time start, uint64_t duration, Location location, uint32_t requirementsId)
+                 {
+        eventID = id;
+        startTime = start;
+        durationSeconds = duration;
+        eventLocation = location;
+        dispatched = false;
     }
 } // LockFreeDispatch

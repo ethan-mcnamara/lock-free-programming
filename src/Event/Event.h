@@ -3,16 +3,26 @@
 
 #include "../Time/Time.h"
 #include <cstdint>
+#include "Event.h"
+#include "../Location/Location.h"
+class Vehicle;
+#include <vector>
+#include <memory>
 
 namespace LockFreeDispatch {
 
     class Event {
     private:
-        uint32_t eventID;
-        Time startTime;
-        uint64_t durationSeconds;
         bool dispatched;
+        uint64_t durationSeconds;
+        uint32_t eventID;
+        Location eventLocation;
+        Time startTime;
+
     public:
+        Event();
+
+        Event(uint32_t id, Time start, uint64_t duration, Location location, uint32_t requirementsId);
 
         uint32_t getEventID() const;
 
@@ -29,6 +39,11 @@ namespace LockFreeDispatch {
         bool getDispatched() const;
 
         void setDispatched(bool dispatchStatus);
+
+        Location getLocation();
+
+        void setLocation(Location newLocation);
+
     };
 
 } // LockFreeDispatch
