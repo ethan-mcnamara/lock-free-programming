@@ -1,5 +1,4 @@
 # lock-free-programming
-A repository containing work related to a University of Victoria directed study course done with Dr. Sean Chester on the topic of lock-free programming.
 
 Research was performed into literary discussion of lock-free programming and a fire dispatch system simulation was built leveraging the principles discused in the research.
 
